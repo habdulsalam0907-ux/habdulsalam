@@ -41,6 +41,11 @@ pageextension 60600 MyExtension extends "Customer Card"
                 ApplicationArea = All;
                 ToolTip = 'Specifies the value of the Customer Name Abbreviation field.';
             }
+            field("Customer Business Group"; Rec."Customer Business Group")
+            {
+                ApplicationArea = All;
+                ToolTip = 'Specifies the value of the Customer Business Group field.';
+            }
         }
 
     }

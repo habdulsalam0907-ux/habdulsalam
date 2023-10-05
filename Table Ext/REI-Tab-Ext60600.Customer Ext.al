@@ -29,8 +29,12 @@ tableextension 60600 CustomerEx extends Customer
         {
             DataClassification = ToBeClassified;
         }
+        field(50008; "Customer Business Group"; Text[30])
+        {
+            DataClassification = ToBeClassified;
+        }
     }
-    
+
     var
         myInt: Integer;
 }
