@@ -25,7 +25,7 @@ tableextension 60600 CustomerEx extends Customer
         {
             DataClassification = ToBeClassified;
         }
-        field(50007; "Customer Name Abbreviation"; Code[3])
+        field(50007; "Customer Name Abbreviation"; Code[10])
         {
             DataClassification = ToBeClassified;
         }
