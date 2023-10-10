@@ -34,7 +34,7 @@ tableextension 60603 EmployeeTabExt extends Employee
 
         field(50000; "Salary Net Pay"; Decimal)
         {
-            Caption = 'Salary Net Pay';
+            Caption = 'Salary Net Pay - Monthly';
             DataClassification = ToBeClassified;
 
             trigger OnValidate()
@@ -63,7 +63,47 @@ tableextension 60603 EmployeeTabExt extends Employee
 
             //DataClassification = ToBeClassified;
         }
-
+        field(50003; "Annual Gross"; Decimal)
+        {
+            Caption = 'Annual Gross';
+            DataClassification = ToBeClassified;
+        }
+        field(50004; "Annual Basic Salary"; Decimal)
+        {
+            Caption = 'Annual Basic Salary';
+            DataClassification = ToBeClassified;
+        }
+        field(50005; "Annual Housing"; Decimal)
+        {
+            Caption = 'Annual Housing';
+            DataClassification = ToBeClassified;
+        }
+        field(50006; "Annual Transport"; Decimal)
+        {
+            Caption = 'Annual Transport';
+            DataClassification = ToBeClassified;
+        }
+        field(50007; "Annual Other"; Decimal)
+        {
+            Caption = 'Annual Other';
+            DataClassification = ToBeClassified;
+        }
+        field(50008; "Annual Leave Allowance"; Decimal)
+        {
+            Caption = 'Annual Leave Allowance';
+            DataClassification = ToBeClassified;
+        }
+        field(50009; "Special 13th Month"; Decimal)
+        {
+            Caption = 'Special 13th Month';
+            DataClassification = ToBeClassified;
+        }
+        field(50010; "Contract Currency Code"; Code[50])
+        {
+            Caption = 'Contract/Salary Currency Code';
+            DataClassification = ToBeClassified;
+            TableRelation = Currency;
+        }
         field(50011; "Salary Grade"; Code[50])
         {
             Caption = 'Salary Grade';
@@ -90,12 +130,12 @@ tableextension 60603 EmployeeTabExt extends Employee
             DataClassification = ToBeClassified;
             OptionMembers = " ",Profit,Cost;
         }
-        field(50030; "Postal Address"; Text[20])
+        field(50030; "Postal Address"; Text[100])
         {
             DataClassification = ToBeClassified;
             Caption = 'Postal Address';
         }
-        field(50031; "Residential Address"; Text[30])
+        field(50031; "Residential Address"; Text[100])
         {
             DataClassification = ToBeClassified;
             Caption = 'Residential Address';
@@ -152,7 +192,15 @@ tableextension 60603 EmployeeTabExt extends Employee
                 CIT.SETRANGE(CIT.Code, Nationality);
                 IF CIT.FIND('-') THEN BEGIN
                     "Nationality Text" := CIT.Name;
+                    "Country/Region Code" := Nationality;
                 END;
+            end;
+        }
+        modify("Country/Region Code")
+        {
+            trigger OnAfterValidate()
+            begin
+                validate(Nationality,"Country/Region Code");
             end;
         }
         field(50039; "Fax Number"; Text[30])
@@ -326,7 +374,7 @@ tableextension 60603 EmployeeTabExt extends Employee
             DataClassification = ToBeClassified;
             Editable = false;
         }
-        field(50066; "Manager's Email"; Text[50])
+        field(50066; "Manager's Email"; Text[100])
         {
             DataClassification = ToBeClassified;
         }
@@ -338,7 +386,6 @@ tableextension 60603 EmployeeTabExt extends Employee
         field(50068; "PFA Administrator"; Text[200])
         {
             DataClassification = ToBeClassified;
-            Editable = True;
         }
         field(50069; "PFA Code"; Code[20])
         {
@@ -359,7 +406,7 @@ tableextension 60603 EmployeeTabExt extends Employee
         {
             DataClassification = ToBeClassified;
         }
-        field(50081; "Bank Account Name"; Code[20])
+        field(50081; "Bank Account Name"; Code[200])
         {
             DataClassification = ToBeClassified;
         }
@@ -403,7 +450,7 @@ tableextension 60603 EmployeeTabExt extends Employee
         {
             DataClassification = ToBeClassified;
         }
-        field(50092; "Bank Name"; Code[10])
+        field(50092; "Bank Name"; Code[100])
         {
             DataClassification = ToBeClassified;
         }
@@ -427,6 +474,11 @@ tableextension 60603 EmployeeTabExt extends Employee
             end;
         }
         field(50094; "HMO Plan"; Code[30])
+        {
+            DataClassification = ToBeClassified;
+        }
+        
+        field(50095; "Tax Authority"; Text[100])
         {
             DataClassification = ToBeClassified;
         }
@@ -472,7 +524,8 @@ tableextension 60603 EmployeeTabExt extends Employee
         {
             Caption = 'Employment Type';
             DataClassification = ToBeClassified;
-            OptionMembers = Other,Internship,"Full Time";
+            OptionMembers = Other,Internship,"Full Time",Contract;
+            OptionCaption = 'Other,Internship,Permanent,Contract';
             trigger OnValidate()
             begin
                 IF "Employment Type" = "Employment Type"::Other THEN BEGIN
@@ -553,6 +606,11 @@ tableextension 60603 EmployeeTabExt extends Employee
             TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = CONST(1), Blocked = CONST(false));
             DataClassification = ToBeClassified;
             CaptionClass = '1,2,1';
+
+            trigger OnValidate()
+            begin
+                Validate("Global Dimension 1 Code","Shortcut Dimension 1 Code");
+            end;
         }
         field(50116; "Shortcut Dimension 2 Code"; Code[30])
         {
@@ -560,6 +618,11 @@ tableextension 60603 EmployeeTabExt extends Employee
             TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = CONST(2), Blocked = CONST(false));
             DataClassification = ToBeClassified;
             CaptionClass = '1,2,2';
+
+            trigger OnValidate()
+            begin
+                Validate("Global Dimension 2 Code","Shortcut Dimension 2 Code");
+            end;
         }
         field(50117; "Shortcut Dimension 3 Code"; Code[30])
         {
@@ -567,6 +630,7 @@ tableextension 60603 EmployeeTabExt extends Employee
             TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = CONST(3), Blocked = CONST(false));
             DataClassification = ToBeClassified;
             CaptionClass = '1,2,3';
+            
         }
         field(50118; "Probation Period"; Decimal)
         {
@@ -603,7 +667,7 @@ tableextension 60603 EmployeeTabExt extends Employee
             DataClassification = ToBeClassified;
             Editable = false;
         }
-        field(50121; "Confirmation Employee"; Boolean)
+        field(50121; "Confirmed Employee"; Boolean)
         {
             Caption = 'Confirmation Employee';
             DataClassification = ToBeClassified;
@@ -623,9 +687,12 @@ tableextension 60603 EmployeeTabExt extends Employee
             Caption = 'Citizenship Text';
             DataClassification = ToBeClassified;
         }
-        field(50125; "Out-sourced Staff"; Boolean)
+        field(50125; "Bank Code"; Code[20])
         {
-            Caption = 'Out-sourced Staff';
+            DataClassification = ToBeClassified;
+        }
+        field(50126; "Bank Sort Code"; Code[20])
+        {
             DataClassification = ToBeClassified;
         }
         

@@ -28,6 +28,16 @@ pageextension 60605 EmployeeCardExt extends "Employee Card"
                 ApplicationArea = All;
                 ToolTip = 'Specifies the value of the Manager''s Email field.';
             }
+            field("Shortcut Dimension 1 Code"; Rec."Shortcut Dimension 1 Code")
+            {
+                ApplicationArea = All;
+                ToolTip = 'Specifies the value of the Shortcut Dimension 1 Code field.';
+            }
+            field("Shortcut Dimension 2 Code"; Rec."Shortcut Dimension 2 Code")
+            {
+                ApplicationArea = All;
+                ToolTip = 'Specifies the value of the Shortcut Dimension 2 Code field.';
+            }
         }
         addafter(Gender)
         {
@@ -227,7 +237,7 @@ pageextension 60605 EmployeeCardExt extends "Employee Card"
                 Editable = false;
 
             }
-            field("Confirmation Employee"; Rec."Confirmation Employee")
+            field("Confirmed Employee"; Rec."Confirmed Employee")
             {
                 ApplicationArea = All;
                 ToolTip = 'Specifies the value of the Confirmation Employee';
@@ -253,26 +263,24 @@ pageextension 60605 EmployeeCardExt extends "Employee Card"
                 ApplicationArea = All;
                 ToolTip = 'Specifies the value of the Bank Name field.';
             }
-            field("BVN"; Rec."BVN")
+            field("Bank Sort Code"; Rec."Bank Sort Code")
             {
                 ApplicationArea = All;
-                ToolTip = 'Specifies the value of the BVN field.';
+                ToolTip = 'Specifies the value of the Bank Sort Code field.';
             }
-            field("NIN"; Rec."NIN")
-            {
-                Caption = 'NIN';
-                ToolTip = 'Specifies the value of the BVN field.';
-                ApplicationArea = All;
-            }
+            
         }
         addafter(Payments)
         {
             group("Benefits")
             {
-                Caption = 'Benefit';
+                Caption = 'Benefit And Others';
                 Visible = UnlimitedAccess;
-                Editable = EditableAcess;
-
+                field("Tax Authority"; Rec."Tax Authority")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the value of the Tax Authority field.';
+                }
                 field("Tax ID"; Rec."Tax ID")
                 {
                     Caption = 'Tax Identification Number';
@@ -297,6 +305,62 @@ pageextension 60605 EmployeeCardExt extends "Employee Card"
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the NHF Number field.';
+                }
+                field("BVN"; Rec."BVN")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the value of the BVN field.';
+                }
+                field("NIN"; Rec."NIN")
+                {
+                    Caption = 'NIN';
+                    ToolTip = 'Specifies the value of the BVN field.';
+                    ApplicationArea = All;
+                }
+                group(AnnualPayDetails)
+                {
+                    Caption = 'Annual Pay Details';
+                    Editable = EditableAcess;
+                    field("Contract Currency Code"; Rec."Contract Currency Code")
+                    {
+                        ApplicationArea = All;
+                        ToolTip = 'Specifies the value of the Contract/Salary Currency Code field.';
+                    }
+                    field("Annual Gross"; Rec."Annual Gross")
+                    {
+                        ApplicationArea = All;
+                        ToolTip = 'Specifies the value of the Annual Gross field.';
+                    }
+                    field("Annual Basic Salary"; Rec."Annual Basic Salary")
+                    {
+                        ApplicationArea = All;
+                        ToolTip = 'Specifies the value of the Annual Basic Salary field.';
+                    }
+                    field("Annual Housing"; Rec."Annual Housing")
+                    {
+                        ApplicationArea = All;
+                        ToolTip = 'Specifies the value of the Annual Housing field.';
+                    }
+                    field("Annual Transport"; Rec."Annual Transport")
+                    {
+                        ApplicationArea = All;
+                        ToolTip = 'Specifies the value of the Annual Transport field.';
+                    }
+                    field("Annual Other"; Rec."Annual Other")
+                    {
+                        ApplicationArea = All;
+                        ToolTip = 'Specifies the value of the Annual Other field.';
+                    }
+                    field("Annual Leave Allowance"; Rec."Annual Leave Allowance")
+                    {
+                        ApplicationArea = All;
+                        ToolTip = 'Specifies the value of the Annual Leave Allowance field.';
+                    }
+                    field("Special 13th Month"; Rec."Special 13th Month")
+                    {
+                        ApplicationArea = All;
+                        ToolTip = 'Specifies the value of the Special 13th Month field.';
+                    }
                 }
             }
             group("Health Information")
@@ -485,6 +549,14 @@ pageextension 60605 EmployeeCardExt extends "Employee Card"
                 RunPageView = where(type = filter("Beneficiary"));
                 RunPageLink = "Employee Code" = field("No.");
             }
+            action(Referee)
+            {
+                image = ContactReference;
+                Caption = 'Referees';
+                ApplicationArea = Basic, Suite;
+                RunObject = Page "Employee Referees/Guarantors";
+                RunPageLink = "Employee No" = field("No.");
+            }
         }
 
     }
@@ -492,7 +564,6 @@ pageextension 60605 EmployeeCardExt extends "Employee Card"
 
 
     var
-        [InDataSet]
         UnlimitedAccess: Boolean;
         IsMedical: Boolean;
         EditableAcess: Boolean;
