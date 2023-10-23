@@ -15,7 +15,6 @@ tableextension 60600 CustomerEx extends Customer
         field(50003; "System Type"; Enum SystemTypeEnum)
         {
             DataClassification = ToBeClassified;
-            //TableRelation = "System Type";
         }
         field(50004; "Billing Cycle"; Enum BillingCycleEnum)
         {
