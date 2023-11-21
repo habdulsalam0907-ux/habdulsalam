@@ -53,6 +53,11 @@ tableextension 60602 VendorExt extends Vendor
         {
             DataClassification = ToBeClassified;
         }
+        field(60612; MaintenanceVendor; Boolean)
+        {
+            DataClassification = ToBeClassified;
+            Caption = 'Maintenance Vendor';
+        }
     }
     var
         myInt: Integer;

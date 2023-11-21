@@ -8,11 +8,13 @@ pageextension 60602 FixedAssetCardExt extends "Fixed Asset Card"
             {
                 ApplicationArea = All;
                 ToolTip = 'Specifies the value of the Customer ID field.';
+                visible = false;
             }
             field("Customer Name"; Rec."Customer Name")
             {
                 ApplicationArea = All;
                 ToolTip = 'Specifies the value of the Customer Name field.';
+                visible = false;
             }
             field(Location; Rec.Location)
             {
@@ -23,43 +25,58 @@ pageextension 60602 FixedAssetCardExt extends "Fixed Asset Card"
             {
                 ApplicationArea = All;
                 ToolTip = 'Specifies the value of the State of Location field.';
+                visible = false;
             }
             field("Leased Asset"; Rec."Leased Asset")
             {
                 ApplicationArea = All;
                 ToolTip = 'Specifies the value of the Leased Asset field.';
+                visible = false;
             }
             field("Leased Asset Class"; Rec."Leased Asset Class")
             {
                 ApplicationArea = All;
                 ToolTip = 'Specifies the value of the Leased Asset Class field.';
                 Editable = Rec."Leased Asset";
+                visible = false;
             }
             field("Include Leased Composition"; Rec."Include Leased Composition")
             {
                 ApplicationArea = All;
                 ToolTip = 'Specifies the value of the Include Leased Composition field.';
                 Editable = Rec."Leased Asset";
+                visible = false;
             }
-            group(PoolCarDetails)
+            field("Classify As Vehicle"; Rec."Classify As Vehicle")
             {
-                ShowCaption = true;
-                Caption = 'Pool Car Details';
-                Visible = (Rec."Leased Asset" = false);
-
-                field("Is A Pool Car"; Rec."Is A Pool Car")
-                {
-                    ApplicationArea = All;
-                    ToolTip = 'Specifies the value of the Is a pool car field.';
-                    Editable = true;
-                }
-                field(Model; Rec.Model)
-                {
-                    ApplicationArea = All;
-                    ToolTip = 'Specifies the value of the Model field.';
-                    Editable = true;
-                }
+                ApplicationArea = All;
+                ToolTip = 'Specifies the value of the Classify As Vehicle field.';
             }
+            field(Model; Rec.Model)
+            {
+                ApplicationArea = All;
+                ToolTip = 'Specifies the value of the Model field.';
+                Editable = true;
+            }
+            // group(PoolCarDetails)
+            // {
+            //     ShowCaption = true;
+            //     Caption = 'Pool Car Details';
+            //     Visible = (Rec."Leased Asset" = false);
+
+            //     field("Is A Pool Car"; Rec."Is A Pool Car")
+            //     {
+            //         ApplicationArea = All;
+            //         ToolTip = 'Specifies the value of the Is a pool car field.';
+            //         Editable = true;
+            //     }
+            //     field(Model; Rec.Model)
+            //     {
+            //         ApplicationArea = All;
+            //         ToolTip = 'Specifies the value of the Model field.';
+            //         Editable = true;
+            //     }
+            // }
             group(MainAssBookValue)
             {
                 ShowCaption = false;

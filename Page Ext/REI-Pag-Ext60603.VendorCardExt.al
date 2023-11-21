@@ -62,6 +62,11 @@ pageextension 60603 VendorCardExt extends "Vendor Card"
                 {
                     ApplicationArea = All;
                 }
+                field(MaintenanceVendor; Rec.MaintenanceVendor)
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the value of the MaintenanceVendor field.';
+                }
             }
         }
 
