@@ -653,8 +653,6 @@ tableextension 60603 EmployeeTabExt extends Employee
                 ELSE
                     "Confirmation Date" := 0D;
             end;
-
-
         }
         field(50119; "End of Probation"; Date)
         {
@@ -695,7 +693,13 @@ tableextension 60603 EmployeeTabExt extends Employee
         {
             DataClassification = ToBeClassified;
         }
-        
+        field(50127; "Shortcut Dimension 5 Code"; Code[30])
+        {
+            Caption = 'Shortcut Dimension 3 Code';
+            TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = CONST(5), Blocked = CONST(false));
+            DataClassification = ToBeClassified;
+            CaptionClass = '1,2,5';
+        }
     }
 
     var

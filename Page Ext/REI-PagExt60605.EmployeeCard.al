@@ -38,6 +38,16 @@ pageextension 60605 EmployeeCardExt extends "Employee Card"
                 ApplicationArea = All;
                 ToolTip = 'Specifies the value of the Shortcut Dimension 2 Code field.';
             }
+            field("Shortcut Dimension 3 Code"; Rec."Shortcut Dimension 3 Code")
+            {
+                ApplicationArea = All;
+                ToolTip = 'Specifies the value of the Shortcut Dimension 3 Code field.';
+            }
+            field("Shortcut Dimension 5 Code"; Rec."Shortcut Dimension 5 Code")
+            {
+                ApplicationArea = All;
+                ToolTip = 'Specifies the value of the Shortcut Dimension 3 Code field.';
+            }
         }
         addafter(Gender)
         {
