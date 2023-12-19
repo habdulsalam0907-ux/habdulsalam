@@ -492,6 +492,14 @@ pageextension 60605 EmployeeCardExt extends "Employee Card"
             ShowMandatory = true;
         }
         #endregion ModifyingFieldGroupProperties
+        addafter(Control3)
+        {
+            part(EmpRoleHistory; "Employee Role History FactBox")
+            {
+                ApplicationArea = BasicHR;
+                SubPageLink = "Employee No" = field("No.");
+            }
+        }
     }
 
     actions
@@ -565,6 +573,14 @@ pageextension 60605 EmployeeCardExt extends "Employee Card"
                 Caption = 'Referees';
                 ApplicationArea = Basic, Suite;
                 RunObject = Page "Employee Referees/Guarantors";
+                RunPageLink = "Employee No" = field("No.");
+            }
+            action(RoleHistory)
+            {
+                image = ContactReference;
+                Caption = 'Job Role History';
+                ApplicationArea = Basic, Suite;
+                RunObject = Page "Employee Role History";
                 RunPageLink = "Employee No" = field("No.");
             }
         }

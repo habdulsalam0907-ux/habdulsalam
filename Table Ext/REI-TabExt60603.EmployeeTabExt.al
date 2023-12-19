@@ -2,6 +2,42 @@ tableextension 60603 EmployeeTabExt extends Employee
 {
     fields
     {
+        modify("Job Title")
+        {
+            trigger OnAfterValidate()
+            var
+                EmpRoleHist, EmpRoleHist2: Record "Employee Role History";
+                LastLineNo: Integer;
+            begin
+                IF (Rec."Job Title" <> xRec."Job Title") and
+                    (Rec."Job Title" <> '') then 
+                begin
+                    EmpRoleHist2.Reset();
+                    EmpRoleHist2.SetRange("Employee No",Rec."No.");
+                    If EmpRoleHist2.FindLast() then begin
+                        LastLineNo := EmpRoleHist2."Line No.";
+                    end else
+                        LastLineNo := 0;
+
+                    EmpRoleHist.Init();
+                    EmpRoleHist."Employee No" := Rec."No.";
+                    If LastLineNo > 0 then begin
+                        EmpRoleHist."Previous Role Description" := EmpRoleHist2."New Role Description";
+                        EmpRoleHist."Previous Role End Date" := Today;
+
+                        EmpRoleHist2.Validate("New Role End Date",Today);
+                        EmpRoleHist2.Modify();
+                    end else begin
+                        EmpRoleHist."Previous Role Description" := '';
+                        EmpRoleHist."Previous Role End Date" := 0D;
+                    end;
+                    EmpRoleHist."Line No." := LastLineNo + 1000;
+                    EmpRoleHist."New Role Description" := Rec."Job Title";
+                    EmpRoleHist.Validate("New Role Start Date",Today);
+                    EmpRoleHist.Insert();
+                end;
+            end;
+        }
         modify("Manager No.")
         {
             trigger OnAfterValidate()
