@@ -5,7 +5,8 @@ page 60607 "Employee Referees/Guarantors"
     Caption = 'Referees/Guarantors';
     AutoSplitKey = true;
     DelayedInsert = true;
-    
+    ApplicationArea = All;
+
 
     layout
     {
@@ -13,7 +14,7 @@ page 60607 "Employee Referees/Guarantors"
         {
             repeater(Group)
             {
-                
+
                 field("Employee No"; Rec."Employee No")
                 {
                     ApplicationArea = All;

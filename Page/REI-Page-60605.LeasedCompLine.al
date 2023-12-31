@@ -5,6 +5,7 @@ page 60605 "Leased Asset Composition Line"
     MultipleNewLines = true;
     PageType = ListPart;
     SourceTable = "Leased Asset Composition";
+    ApplicationArea = All;
 
     layout
     {

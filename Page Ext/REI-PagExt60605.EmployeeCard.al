@@ -38,6 +38,16 @@ pageextension 60605 EmployeeCardExt extends "Employee Card"
                 ApplicationArea = All;
                 ToolTip = 'Specifies the value of the Shortcut Dimension 2 Code field.';
             }
+            field("Shortcut Dimension 3 Code"; Rec."Shortcut Dimension 3 Code")
+            {
+                ApplicationArea = All;
+                ToolTip = 'Specifies the value of the Shortcut Dimension 3 Code field.';
+            }
+            field("Shortcut Dimension 5 Code"; Rec."Shortcut Dimension 5 Code")
+            {
+                ApplicationArea = All;
+                ToolTip = 'Specifies the value of the Shortcut Dimension 3 Code field.';
+            }
         }
         addafter(Gender)
         {
@@ -482,6 +492,14 @@ pageextension 60605 EmployeeCardExt extends "Employee Card"
             ShowMandatory = true;
         }
         #endregion ModifyingFieldGroupProperties
+        addafter(Control3)
+        {
+            part(EmpRoleHistory; "Employee Role History FactBox")
+            {
+                ApplicationArea = BasicHR;
+                SubPageLink = "Employee No" = field("No.");
+            }
+        }
     }
 
     actions
@@ -555,6 +573,14 @@ pageextension 60605 EmployeeCardExt extends "Employee Card"
                 Caption = 'Referees';
                 ApplicationArea = Basic, Suite;
                 RunObject = Page "Employee Referees/Guarantors";
+                RunPageLink = "Employee No" = field("No.");
+            }
+            action(RoleHistory)
+            {
+                image = ContactReference;
+                Caption = 'Job Role History';
+                ApplicationArea = Basic, Suite;
+                RunObject = Page "Employee Role History";
                 RunPageLink = "Employee No" = field("No.");
             }
         }
