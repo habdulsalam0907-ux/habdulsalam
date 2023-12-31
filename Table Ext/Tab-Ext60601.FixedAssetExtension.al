@@ -95,5 +95,32 @@ tableextension 60601 FixedAssetExtension extends "Fixed Asset"
             Caption = 'Is A Pool Car';
             DataClassification = ToBeClassified;
         }
+        field(60610; "Tag No."; Code[30])
+        {
+            DataClassification = ToBeClassified;
+            trigger OnValidate()
+            var
+                UserSetup: Record "User Setup";
+            begin
+                UserSetup.Reset();
+                UserSetup.Get(UserId);
+                if (UserSetup."Allow Tag No. Edit" = true) and (Rec."Tag No." <> '') AND (Rec."Tag No." <> xRec."Tag No.") then
+                    exit else
+                    Error('Sorry, you are not authorized to modify the Tag No. field. Contact your system admin!');
+            end;
+        }
+        field(60611; "Plate No."; Code[30])
+        {
+            DataClassification = ToBeClassified;
+            trigger Onvalidate()
+            var
+                UserSetup: Record "User Setup";
+            begin
+                UserSetup.Get(UserId);
+                if (UserSetup."Allow Tag No. Edit" = true) and (Rec."Plate No." <> '') AND (Rec."Plate No." <> xRec."Plate No.") then
+                    exit else
+                    Error('Sorry, you are not authorized to modify the Plate No. field. Contact your system admin!');
+            end;
+        }
     }
 }

@@ -4,53 +4,32 @@ pageextension 60602 FixedAssetCardExt extends "Fixed Asset Card"
     {
         addlast(General)
         {
-            field("Customer ID"; Rec."Customer ID")
+
+            field("Global Dimension 1 Code"; Rec."Global Dimension 1 Code")
             {
                 ApplicationArea = All;
-                ToolTip = 'Specifies the value of the Customer ID field.';
-                visible = false;
+                NotBlank = true;
+                ShowMandatory = true;
             }
-            field("Customer Name"; Rec."Customer Name")
+            field("Global Dimension 2 Code"; Rec."Global Dimension 2 Code")
             {
                 ApplicationArea = All;
-                ToolTip = 'Specifies the value of the Customer Name field.';
-                visible = false;
-            }
-            field(Location; Rec.Location)
-            {
-                ApplicationArea = All;
-                ToolTip = 'Specifies the value of the Location field.';
-            }
-            field("State of Location"; Rec."State of Location")
-            {
-                ApplicationArea = All;
-                ToolTip = 'Specifies the value of the State of Location field.';
-                visible = false;
-            }
-            field("Leased Asset"; Rec."Leased Asset")
-            {
-                ApplicationArea = All;
-                ToolTip = 'Specifies the value of the Leased Asset field.';
-                visible = false;
-            }
-            field("Leased Asset Class"; Rec."Leased Asset Class")
-            {
-                ApplicationArea = All;
-                ToolTip = 'Specifies the value of the Leased Asset Class field.';
-                Editable = Rec."Leased Asset";
-                visible = false;
-            }
-            field("Include Leased Composition"; Rec."Include Leased Composition")
-            {
-                ApplicationArea = All;
-                ToolTip = 'Specifies the value of the Include Leased Composition field.';
-                Editable = Rec."Leased Asset";
-                visible = false;
+                NotBlank = true;
+                ShowMandatory = true;
             }
             field("Classify As Vehicle"; Rec."Classify As Vehicle")
             {
                 ApplicationArea = All;
                 ToolTip = 'Specifies the value of the Classify As Vehicle field.';
+            }
+            field("Tag No."; Rec."Tag No.")
+            {
+                ApplicationArea = All;
+
+            }
+            field("Plate No."; Rec."Plate No.")
+            {
+                ApplicationArea = All;
             }
             field(Model; Rec.Model)
             {
@@ -58,25 +37,6 @@ pageextension 60602 FixedAssetCardExt extends "Fixed Asset Card"
                 ToolTip = 'Specifies the value of the Model field.';
                 Editable = true;
             }
-            // group(PoolCarDetails)
-            // {
-            //     ShowCaption = true;
-            //     Caption = 'Pool Car Details';
-            //     Visible = (Rec."Leased Asset" = false);
-
-            //     field("Is A Pool Car"; Rec."Is A Pool Car")
-            //     {
-            //         ApplicationArea = All;
-            //         ToolTip = 'Specifies the value of the Is a pool car field.';
-            //         Editable = true;
-            //     }
-            //     field(Model; Rec.Model)
-            //     {
-            //         ApplicationArea = All;
-            //         ToolTip = 'Specifies the value of the Model field.';
-            //         Editable = true;
-            //     }
-            // }
             group(MainAssBookValue)
             {
                 ShowCaption = false;
@@ -91,7 +51,7 @@ pageextension 60602 FixedAssetCardExt extends "Fixed Asset Card"
 
                     trigger OnDrillDown()
                     var
-                        FADeprBook, FADeprBook1: Record "FA Depreciation Book";
+                        FADeprBook, FADeprBook1 : Record "FA Depreciation Book";
                         DepBookCode: Text;
                     begin
                         FADeprBook.Reset();
@@ -100,18 +60,18 @@ pageextension 60602 FixedAssetCardExt extends "Fixed Asset Card"
                             DepBookCode := FADeprBook."Depreciation Book Code";
                             // Page.Run(page::"Main Asset Statistics",FADeprBook);
                         end;
-                            
+
 
                         FADeprBook1.Reset();
                         FADeprBook1.SetCurrentKey("Depreciation Book Code", "Component of Main Asset");
                         FADeprBook1.SetRange("Depreciation Book Code", DepBookCode);
                         FADeprBook1.SetRange("Component of Main Asset", Rec."Component of Main Asset");
                         if FADeprBook1.FindSet() then
-                            Page.Run(page::"MainAsset Components",FADeprBook1);
+                            Page.Run(page::"MainAsset Components", FADeprBook1);
                     end;
                 }
             }
-            
+
         }
         addafter(General)
         {
@@ -132,6 +92,18 @@ pageextension 60602 FixedAssetCardExt extends "Fixed Asset Card"
     trigger OnAfterGetRecord()
     begin
         GetBookValue();
+    end;
+
+    trigger OnClosePage()
+    begin
+        if Rec."No." <> '' then begin
+            if (Rec."Global Dimension 1 Code" = '') then
+                Error('Business Unit Code must not be emptied!');
+
+            if (Rec."Global Dimension 2 Code" = '') then
+                Error('Business Unit Code must not be emptied!');
+        end;
+
     end;
 
     local procedure GetBookValue()
