@@ -603,15 +603,17 @@ pageextension 60605 EmployeeCardExt extends "Employee Card"
         if UserSetup.Get(UserId) then begin
             if (UserSetup."HR Manager" or UserSetup."HR Officer" Or
                 UserSetup."Finance Manager" Or UserSetup."Fin/Acc Officer") and
-                UserSetup."View Employee Record" then begin
+                UserSetup."View Employee Record" then 
+            begin
                 UnlimitedAccess := true;
                 exit;
             end else
                 if UserSetup."View Employee Record" And
-           (UserSetup."Team Lead" Or UserSetup.HODGeneral Or
-           UserSetup."ESS Proxy") then begin
+                    (UserSetup."Team Lead" Or UserSetup.HODGeneral Or
+                    UserSetup."ESS Proxy") then 
+                begin
                     Rec.FILTERGROUP(10);
-                    Rec.SETRANGE("Global Dimension 1 Code", UserSetup."Department Code");
+                    Rec.SETRANGE("Global Dimension 2 Code", UserSetup."Department Code");
                     Rec.FILTERGROUP(0);
                     UnlimitedAccess := false;
                 end else begin
