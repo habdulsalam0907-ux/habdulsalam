@@ -25,17 +25,18 @@ pageextension 60602 FixedAssetCardExt extends "Fixed Asset Card"
             field("Tag No."; Rec."Tag No.")
             {
                 ApplicationArea = All;
-
+                Editable = AllowPageEdit;
             }
             field("Plate No."; Rec."Plate No.")
             {
                 ApplicationArea = All;
+                Editable = AllowPageEdit;
             }
             field(Model; Rec.Model)
             {
                 ApplicationArea = All;
                 ToolTip = 'Specifies the value of the Model field.';
-                Editable = true;
+                Editable = AllowPageEdit;
             }
             group(MainAssBookValue)
             {
@@ -73,6 +74,11 @@ pageextension 60602 FixedAssetCardExt extends "Fixed Asset Card"
             }
 
         }
+        modify("FA Location Code")
+        {
+            ShowMandatory = true;
+            ApplicationArea = All;
+        }
         addafter(General)
         {
             part(LeasedComp; "Leased Asset Composition Line")
@@ -85,13 +91,54 @@ pageextension 60602 FixedAssetCardExt extends "Fixed Asset Card"
             }
         }
     }
-
     var
+        AllowPageEdit: Boolean;
         BookValue: Decimal;
 
+    trigger OnOpenPage()
+    var
+        UserSetup: Record "User Setup";
+
+    begin
+        AllowPageEdit := false;
+        UserSetup.Get(UserId);
+        if not (UserSetup."Head of Corp Services" = true) OR (UserSetup."Finance Manager" = true)
+        AND (UserSetup."Allow Tag No. Edit" = true) then
+            AllowPageEdit := true
+        else
+            AllowPageEdit := false;
+    end;
+
     trigger OnAfterGetRecord()
+    var
+        UserSetup: Record "User Setup";
+
     begin
         GetBookValue();
+        AllowPageEdit := false;
+        UserSetup.Get(UserId);
+        if (UserSetup."Head of Corp Services" = true) OR (UserSetup."Finance Manager" = true)
+        AND (UserSetup."Allow Tag No. Edit" = true) then
+            AllowPageEdit := true
+        else
+            AllowPageEdit := false;
+        //    Error('You are not authorized to edit any field on the Asset Form. Contact the Head of Corporate Services or Chief Financial Officer for access!');
+    end;
+
+
+    trigger OnModifyRecord(): Boolean
+    var
+        UserSetup: Record "User Setup";
+
+    begin
+        AllowPageEdit := false;
+        UserSetup.Get(UserId);
+        if (UserSetup."Head of Corp Services" = true) OR (UserSetup."Finance Manager" = true)
+        AND (UserSetup."Allow Tag No. Edit" = true) then
+            AllowPageEdit := true
+        else
+            AllowPageEdit := false;
+        //   Error('You are not authorized to edit any field on the Asset Form. Contact the Head of Corporate Services or Chief Financial Officer for access!');
     end;
 
     trigger OnClosePage()
@@ -101,9 +148,10 @@ pageextension 60602 FixedAssetCardExt extends "Fixed Asset Card"
                 Error('Business Unit Code must not be emptied!');
 
             if (Rec."Global Dimension 2 Code" = '') then
-                Error('Business Unit Code must not be emptied!');
+                Error('Department Code must not be emptied!');
+            if (Rec."FA Location Code" = '') then
+                Error('FA Location Code must not be emptied!');
         end;
-
     end;
 
     local procedure GetBookValue()

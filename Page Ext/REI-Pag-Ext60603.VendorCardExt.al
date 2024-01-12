@@ -2,7 +2,6 @@ pageextension 60603 VendorCardExt extends "Vendor Card"
 {
     layout
     {
-        // Add changes to page layout here
         addafter(Blocked)
         {
 
@@ -69,7 +68,15 @@ pageextension 60603 VendorCardExt extends "Vendor Card"
                 }
             }
         }
-
+        modify("E-Mail")
+        {
+            ApplicationArea = All;
+            ShowMandatory = true;
+        }
     }
-
+    trigger OnClosePage()
+    begin
+        if Rec."E-Mail" = '' then
+            Error('The vendor email address field must not be filled!');
+    end;
 }

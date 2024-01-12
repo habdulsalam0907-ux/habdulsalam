@@ -47,14 +47,16 @@ pageextension 60600 MyExtension extends "Customer Card"
                 ToolTip = 'Specifies the value of the Customer Business Group field.';
             }
         }
+        modify("E-Mail")
+        {
+            ShowMandatory = true;
+            ApplicationArea = All;
+        }
 
     }
-
-    actions
-    {
-        // Add changes to page actions here
-    }
-
-    var
-        myInt: Integer;
+    trigger OnClosePage()
+    begin
+        if Rec."E-Mail" = '' then
+            Error('The customer email address field must not be emptied!');
+    end;
 }
