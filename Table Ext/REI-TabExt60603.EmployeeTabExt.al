@@ -676,18 +676,15 @@ tableextension 60603 EmployeeTabExt extends Employee
             trigger OnValidate()
             begin
                 TestField("Employment Date");
-                IF "Probation Period" <> 0 THEN
+                IF "Probation Period" <> 0 THEN begin
                     "End of Probation" := CALCDATE(STRSUBSTNO('%1M', "Probation Period"),
-                                            "Employment Date")
-                ELSE
-                    "End of Probation" := 0D;
-
-                TESTFIELD("Employment Date");
-                IF "Probation Period" <> 0 THEN
+                                            "Employment Date");
                     "Confirmation Date" := CALCDATE(STRSUBSTNO('%1M', "Probation Period"),
                                             "Employment Date")
-                ELSE
+                end ELSE begin
+                    "End of Probation" := 0D;
                     "Confirmation Date" := 0D;
+                end;
             end;
         }
         field(50119; "End of Probation"; Date)
@@ -735,6 +732,14 @@ tableextension 60603 EmployeeTabExt extends Employee
             TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = CONST(5), Blocked = CONST(false));
             DataClassification = ToBeClassified;
             CaptionClass = '1,2,5';
+        }
+        field(50128; "C-Executive Member"; Boolean)
+        {
+            DataClassification = ToBeClassified;
+        }
+        field(50129; "Job Application Source"; Text[100])
+        {
+            DataClassification = ToBeClassified;
         }
     }
 

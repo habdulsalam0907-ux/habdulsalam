@@ -35,6 +35,9 @@ table 60606 "Employee Referees/Guarantor"
         field(10; Blocked; Boolean)
         {
         }
+        field(11; "Submission Deadline"; Date)
+        {
+        }
     }
 
     keys
