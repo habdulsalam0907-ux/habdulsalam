@@ -9,6 +9,22 @@ pageextension 60605 EmployeeCardExt extends "Employee Card"
                 ApplicationArea = All;
                 ToolTip = 'Specifies the value of the Manager User ID field.';
             }
+            field("Applicable Job Grade"; Rec."Applicable Job Grade")
+            {
+                ApplicationArea = All;
+                ShowMandatory = true;
+                ToolTip = 'Specifies the value of the Applicable Job Grade field.';
+            }
+            field("Job Grade Description"; Rec."Job Grade Description")
+            {
+                ApplicationArea = All;
+                ToolTip = 'Specifies the value of the Job Grade Description field.';
+            }
+            field("Job Application Source"; Rec."Job Application Source")
+            {
+                ApplicationArea = All;
+                ToolTip = 'Specifies the value of the Job Application Source field.';
+            }
             field("Manager No."; Rec."Manager No.")
             {
                 Caption = 'Manager No.';
@@ -278,7 +294,7 @@ pageextension 60605 EmployeeCardExt extends "Employee Card"
                 ApplicationArea = All;
                 ToolTip = 'Specifies the value of the Bank Sort Code field.';
             }
-            
+
         }
         addafter(Payments)
         {
@@ -602,15 +618,13 @@ pageextension 60605 EmployeeCardExt extends "Employee Card"
         if UserSetup.Get(UserId) then begin
             if (UserSetup."HR Manager" or UserSetup."HR Officer" Or
                 UserSetup."Finance Manager" Or UserSetup."Fin/Acc Officer") and
-                UserSetup."View Employee Record" then 
-            begin
+                UserSetup."View Employee Record" then begin
                 UnlimitedAccess := true;
                 exit;
             end else
                 if UserSetup."View Employee Record" And
                     (UserSetup."Team Lead" Or UserSetup.HODGeneral Or
-                    UserSetup."ESS Proxy") then 
-                begin
+                    UserSetup."ESS Proxy") then begin
                     Rec.FILTERGROUP(10);
                     Rec.SETRANGE("Global Dimension 2 Code", UserSetup."Department Code");
                     Rec.FILTERGROUP(0);

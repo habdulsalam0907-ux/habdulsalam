@@ -6,14 +6,13 @@ tableextension 60603 EmployeeTabExt extends Employee
         {
             trigger OnAfterValidate()
             var
-                EmpRoleHist, EmpRoleHist2: Record "Employee Role History";
+                EmpRoleHist, EmpRoleHist2 : Record "Employee Role History";
                 LastLineNo: Integer;
             begin
                 IF (Rec."Job Title" <> xRec."Job Title") and
-                    (Rec."Job Title" <> '') then 
-                begin
+                    (Rec."Job Title" <> '') then begin
                     EmpRoleHist2.Reset();
-                    EmpRoleHist2.SetRange("Employee No",Rec."No.");
+                    EmpRoleHist2.SetRange("Employee No", Rec."No.");
                     If EmpRoleHist2.FindLast() then begin
                         LastLineNo := EmpRoleHist2."Line No.";
                     end else
@@ -25,7 +24,7 @@ tableextension 60603 EmployeeTabExt extends Employee
                         EmpRoleHist."Previous Role Description" := EmpRoleHist2."New Role Description";
                         EmpRoleHist."Previous Role End Date" := Today;
 
-                        EmpRoleHist2.Validate("New Role End Date",Today);
+                        EmpRoleHist2.Validate("New Role End Date", Today);
                         EmpRoleHist2.Modify();
                     end else begin
                         EmpRoleHist."Previous Role Description" := '';
@@ -33,7 +32,7 @@ tableextension 60603 EmployeeTabExt extends Employee
                     end;
                     EmpRoleHist."Line No." := LastLineNo + 1000;
                     EmpRoleHist."New Role Description" := Rec."Job Title";
-                    EmpRoleHist.Validate("New Role Start Date",Today);
+                    EmpRoleHist.Validate("New Role Start Date", Today);
                     EmpRoleHist.Insert();
                 end;
             end;
@@ -242,7 +241,7 @@ tableextension 60603 EmployeeTabExt extends Employee
         {
             trigger OnAfterValidate()
             begin
-                validate(Nationality,"Country/Region Code");
+                validate(Nationality, "Country/Region Code");
             end;
         }
         field(50039; "Fax Number"; Text[30])
@@ -519,7 +518,7 @@ tableextension 60603 EmployeeTabExt extends Employee
         {
             DataClassification = ToBeClassified;
         }
-        
+
         field(50095; "Tax Authority"; Text[100])
         {
             DataClassification = ToBeClassified;
@@ -651,7 +650,7 @@ tableextension 60603 EmployeeTabExt extends Employee
 
             trigger OnValidate()
             begin
-                Validate("Global Dimension 1 Code","Shortcut Dimension 1 Code");
+                Validate("Global Dimension 1 Code", "Shortcut Dimension 1 Code");
             end;
         }
         field(50116; "Shortcut Dimension 2 Code"; Code[30])
@@ -663,7 +662,7 @@ tableextension 60603 EmployeeTabExt extends Employee
 
             trigger OnValidate()
             begin
-                Validate("Global Dimension 2 Code","Shortcut Dimension 2 Code");
+                Validate("Global Dimension 2 Code", "Shortcut Dimension 2 Code");
             end;
         }
         field(50117; "Shortcut Dimension 3 Code"; Code[30])
@@ -672,7 +671,7 @@ tableextension 60603 EmployeeTabExt extends Employee
             TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = CONST(3), Blocked = CONST(false));
             DataClassification = ToBeClassified;
             CaptionClass = '1,2,3';
-            
+
         }
         field(50118; "Probation Period"; Decimal)
         {
@@ -739,10 +738,10 @@ tableextension 60603 EmployeeTabExt extends Employee
             DataClassification = ToBeClassified;
             CaptionClass = '1,2,5';
         }
-        field(50128; "C-Executive Member"; Boolean)
+        /* field(50128; "C-Executive Member"; Boolean)
         {
             DataClassification = ToBeClassified;
-        }
+        } */
         field(50129; "Job Application Source"; Text[100])
         {
             DataClassification = ToBeClassified;
@@ -757,7 +756,7 @@ tableextension 60603 EmployeeTabExt extends Employee
             begin
                 if JobGradeBenefit.Get("Applicable Job Grade") then
                     "Job Grade Description" := StrSubstNo('%1 - %2',
-                            JobGradeBenefit."Job Grade Description",JobGradeBenefit."Grade Level Description")
+                            JobGradeBenefit."Job Grade Description", JobGradeBenefit."Grade Level Description")
                 else
                     clear("Job Grade Description");
             end;
