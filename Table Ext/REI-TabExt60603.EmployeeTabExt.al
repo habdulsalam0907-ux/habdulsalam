@@ -51,8 +51,14 @@ tableextension 60603 EmployeeTabExt extends Employee
         modify("Birth Date")
         {
             trigger OnAfterValidate()
+            Var
+                AgeCalc: Codeunit "Age Calculator";
             begin
                 "Date Of Birth" := "Birth Date";
+                IF "Date Of Birth" >= TODAY THEN BEGIN
+                    ERROR('Date of Birth cannot be after %1', TODAY);
+                    Age := AgeCalc.CalculateAgeFromBirthDate("Date Of Birth");
+                END;
             end;
         }
         modify("Employment Date")
@@ -70,7 +76,7 @@ tableextension 60603 EmployeeTabExt extends Employee
 
         field(50000; "Salary Net Pay"; Decimal)
         {
-            Caption = 'Salary Net Pay - Monthly';
+            Caption = 'Monthly Gross Salary';
             DataClassification = ToBeClassified;
 
             trigger OnValidate()
@@ -286,12 +292,12 @@ tableextension 60603 EmployeeTabExt extends Employee
 
             trigger OnValidate()
             Var
-                DateRec: Record Date;
+                AgeCalc: Codeunit "Age Calculator";
             begin
                 "Birth Date" := "Date Of Birth";
-                IF FORMAT("Birth Date") <> '' THEN BEGIN
-                    DateRec.GET(DateRec."Period Type"::Date, "Birth Date");
-                    Age := DateRec."Period Name";
+                IF "Date Of Birth" >= TODAY THEN BEGIN
+                    ERROR('Date of Birth cannot be after %1', TODAY);
+                    Age := AgeCalc.CalculateAgeFromBirthDate("Date Of Birth");
                 END;
             end;
         }
@@ -385,7 +391,7 @@ tableextension 60603 EmployeeTabExt extends Employee
             DataClassification = ToBeClassified;
             Caption = 'NHF Number';
         }
-        field(50063; Age; Text[50])
+        field(50063; Age; Integer)
         {
             Caption = 'Age';
             DataClassification = ToBeClassified;
@@ -740,6 +746,25 @@ tableextension 60603 EmployeeTabExt extends Employee
         field(50129; "Job Application Source"; Text[100])
         {
             DataClassification = ToBeClassified;
+        }
+        field(50130; "Applicable Job Grade"; Code[50])
+        {
+            TableRelation = "HR Job Grades & Benefits Setup";
+
+            trigger OnValidate()
+            var
+                JobGradeBenefit: Record "HR Job Grades & Benefits Setup";
+            begin
+                if JobGradeBenefit.Get("Applicable Job Grade") then
+                    "Job Grade Description" := StrSubstNo('%1 - %2',
+                            JobGradeBenefit."Job Grade Description",JobGradeBenefit."Grade Level Description")
+                else
+                    clear("Job Grade Description");
+            end;
+        }
+        field(50131; "Job Grade Description"; Text[200])
+        {
+            Editable = false;
         }
     }
 

@@ -416,10 +416,9 @@ pageextension 60605 EmployeeCardExt extends "Employee Card"
         {
             field("Salary Net Pay"; Rec."Salary Net Pay")
             {
-                Caption = 'Salary Net Pay';
                 ApplicationArea = All;
-                Description = 'Salary Net Pay for the employee';
-                ToolTip = 'Specifies the Salary Net Pay for the employee';
+                Description = 'Monthly Gross Salary for the employee';
+                ToolTip = 'Specifies the Monthly Gross Salary for the employee';
             }
         }
         addafter(LGA)
