@@ -394,6 +394,14 @@ tableextension 60603 EmployeeTabExt extends Employee
         {
             Caption = 'Age';
             DataClassification = ToBeClassified;
+
+            trigger OnValidate()
+            var
+                AgeCalc: Codeunit "Age Calculator";
+            begin
+                "Date Of Birth" := AgeCalc.GetApproximateBirthDateFromAge(Age);
+                "Birth Date" := AgeCalc.GetApproximateBirthDateFromAge(Age);
+            end;
         }
         field(50064; "Date of Joining the company"; Date)
         {

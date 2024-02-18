@@ -6,5 +6,5 @@ enum 60608 "Class Of Degrees"
     value(2; "Second Class (Upper Division)") { }
     value(3; "Second Class (Lower Division)") { }
     value(4; "Third Class") { }
-    value(5; "Fail") { }
+    value(5; "Pass") { }
 }
