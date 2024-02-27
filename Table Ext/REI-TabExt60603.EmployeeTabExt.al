@@ -160,7 +160,7 @@ tableextension 60603 EmployeeTabExt extends Employee
             Caption = 'Employee Group';
             DataClassification = ToBeClassified;
         }
-        field(50021; Designation; Text[50])
+        field(50021; Designation; Text[250])
         {
             Caption = 'Designation';
             DataClassification = ToBeClassified;

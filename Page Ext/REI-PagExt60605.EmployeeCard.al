@@ -616,9 +616,11 @@ pageextension 60605 EmployeeCardExt extends "Employee Card"
         UserSetup: Record "User Setup";
     begin
         if UserSetup.Get(UserId) then begin
-            if (UserSetup."HR Manager" or UserSetup."HR Officer" Or
-                UserSetup."Finance Manager" Or UserSetup."Fin/Acc Officer") and
-                UserSetup."View Employee Record" then begin
+            // if (UserSetup."HR Manager" or UserSetup."HR Officer" Or
+            //     UserSetup."Finance Manager" Or UserSetup."Fin/Acc Officer") and
+            if (UserSetup."HR Manager" or UserSetup."HR Officer" or UserSetup."Head of Corp Services" or UserSetup.CEO) and
+                UserSetup."View Employee Record" then 
+            begin
                 UnlimitedAccess := true;
                 exit;
             end else

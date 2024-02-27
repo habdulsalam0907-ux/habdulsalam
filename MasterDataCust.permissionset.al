@@ -27,5 +27,22 @@ permissionset 60600 MasterDataCust
         page "Employee Role History FactBox"=X,
         page "Leased Asset Classes"=X,
         page "Leased Asset Composition Line"=X,
-        page "MainAsset Components"=X;
+        page "MainAsset Components"=X,
+        tabledata "HR Job Grades & Benefits Setup"=RIMD,
+        tabledata "Job Grade"=RIMD,
+        tabledata "Job Grade Level"=RIMD,
+        tabledata "Production Bach Order Archive"=RIMD,
+        table "HR Job Grades & Benefits Setup"=X,
+        table "Job Grade"=X,
+        table "Job Grade Level"=X,
+        table "Production Bach Order Archive"=X,
+        report "EMPLOYEE REFERENCE FORM"=X,
+        report "NON-EMPLOYEE REFERENCE FORM"=X,
+        codeunit "Age Calculator"=X,
+        codeunit "Employee Reference Reminder"=X,
+        page "Job Grade & Benefits Lookup"=X,
+        page "Job Grade & Benefits Setup"=X,
+        page "Job Grade Levels"=X,
+        page "Job Grades"=X,
+        page "Production Batch No. Archives"=X;
 }
