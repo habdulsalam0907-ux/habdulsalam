@@ -5,6 +5,7 @@ enum 60600 CustTypeEnum
     value(0; " ") { }
     value(1; Local) { }
     value(2; Foreign) { }
+    value(3; Retail) { }
 }
 
 enum 60606 CustStatusEnum
