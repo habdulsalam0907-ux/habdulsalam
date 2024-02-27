@@ -32,6 +32,7 @@ tableextension 60600 CustomerEx extends Customer
         {
             DataClassification = ToBeClassified;
         }
+
     }
 
     var
