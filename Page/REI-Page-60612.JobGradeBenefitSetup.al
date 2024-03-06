@@ -16,10 +16,12 @@ page 60612 "Job Grade & Benefits Setup"
                 field("Code"; Rec."Code")
                 {
                     ToolTip = 'Specifies the value of the Code field.';
+                    Editable = false;
                 }
                 field("Job Grade Code"; Rec."Job Grade Code")
                 {
                     ToolTip = 'Specifies the value of the Job Grade Code field.';
+                    ShowMandatory = true;
                 }
                 field("Job Grade Description"; Rec."Job Grade Description")
                 {
@@ -28,6 +30,7 @@ page 60612 "Job Grade & Benefits Setup"
                 field("Grade Level Code"; Rec."Grade Level Code")
                 {
                     ToolTip = 'Specifies the value of the Grade Level Code field.';
+                    ShowMandatory = true;
                 }
                 field("Grade Level Description"; Rec."Grade Level Description")
                 {
