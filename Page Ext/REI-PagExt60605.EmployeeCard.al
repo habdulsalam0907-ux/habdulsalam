@@ -241,7 +241,7 @@ pageextension 60605 EmployeeCardExt extends "Employee Card"
                 Caption = 'Probation Period (Months)';
                 ApplicationArea = All;
                 ToolTip = 'Specifies the value of the Probation Period.';
-                Editable = (Rec."Confirmation Status" = Rec."Confirmation Status"::"On Probation");
+                Editable = (Rec."Confirmation Status" = Rec."Confirmation Status"::"On Probation") and OnlyHR;
                 ShowMandatory = true;
             }
             field("End of Probation"; Rec."End of Probation")
@@ -261,7 +261,6 @@ pageextension 60605 EmployeeCardExt extends "Employee Card"
                 ApplicationArea = All;
                 ToolTip = 'Specifies the value of the Confirmation Date.';
                 Editable = false;
-
             }
             field("Confirmed Employee"; Rec."Confirmed Employee")
             {
@@ -346,7 +345,7 @@ pageextension 60605 EmployeeCardExt extends "Employee Card"
                 group(AnnualPayDetails)
                 {
                     Caption = 'Annual Pay Details';
-                    Editable = EditableAcess;
+                    Editable = OnlyHR;
                     field("Contract Currency Code"; Rec."Contract Currency Code")
                     {
                         ApplicationArea = All;
@@ -458,12 +457,12 @@ pageextension 60605 EmployeeCardExt extends "Employee Card"
         #region ModifyingFieldGroupProperties
         modify(General)
         {
-            Editable = EditableAcess;
-            Visible = UnlimitedAccess;
+            Editable = OnlyHR;
+            // Visible = UnlimitedAccess;
         }
         modify("No.")
         {
-            Editable = EditableAcess;
+            Editable = OnlyHR;
         }
         modify("Address & Contact")
         {
@@ -473,7 +472,7 @@ pageextension 60605 EmployeeCardExt extends "Employee Card"
         modify(Administration)
         {
             Visible = UnlimitedAccess;
-            Editable = EditableAcess;
+            Editable = OnlyHR;
         }
         modify(Control13)
         {
@@ -493,7 +492,7 @@ pageextension 60605 EmployeeCardExt extends "Employee Card"
         modify(Payments)
         {
             Visible = UnlimitedAccess;
-            Editable = EditableAcess;
+            Editable = OnlyHR;
         }
         modify(Personal)
         {
@@ -502,7 +501,7 @@ pageextension 60605 EmployeeCardExt extends "Employee Card"
         }
         modify("Employment Date")
         {
-            Editable = (Rec."Confirmation Status" = Rec."Confirmation Status"::"On Probation");
+            Editable = (Rec."Confirmation Status" = Rec."Confirmation Status"::"On Probation") and OnlyHR;
             Importance = Promoted;
             ShowMandatory = true;
         }
@@ -511,7 +510,7 @@ pageextension 60605 EmployeeCardExt extends "Employee Card"
         {
             part(EmpRoleHistory; "Employee Role History FactBox")
             {
-                ApplicationArea = BasicHR;
+                ApplicationArea = All;
                 SubPageLink = "Employee No" = field("No.");
             }
         }
@@ -607,7 +606,7 @@ pageextension 60605 EmployeeCardExt extends "Employee Card"
     var
         UnlimitedAccess: Boolean;
         IsMedical: Boolean;
-        EditableAcess: Boolean;
+        EditableAcess, OnlyHR: Boolean;
 
 
     #region SetUserAccessLevel
@@ -670,7 +669,7 @@ pageextension 60605 EmployeeCardExt extends "Employee Card"
         // Hrsetup.Get();
         // UserSetup.Reset();
         // If UserSetup.Get(UserId) then begin
-        //     if (Usersetup."HR Manager" or UserSetup."HR Officer") OR
+        //     if (Rec."No." = UserSetup."Employee No.") Or (Usersetup."HR Manager" or UserSetup."HR Officer") OR
         //         (HRSetup."HR Manager ID" = UserSetup."User ID") then begin
         //         EditableAcess := true
         //     end else begin
@@ -692,7 +691,15 @@ pageextension 60605 EmployeeCardExt extends "Employee Card"
         Hrsetup.Get();
         UserSetup.Get(UserId);
         if (Usersetup."HR Manager" or UserSetup."HR Officer") OR
-            (HRSetup."HR Manager ID" = UserSetup."User ID") then
+            (HRSetup."HR Manager ID" = UserSetup."User ID") then begin
+            EditableAcess := true;
+            OnlyHR := true;
+        end else begin
+            EditableAcess := false;
+            OnlyHR := false;
+        end;
+
+        if (Rec."No." = UserSetup."Employee No.") then
             EditableAcess := true
         else
             EditableAcess := false;
