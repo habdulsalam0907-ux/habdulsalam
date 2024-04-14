@@ -12,6 +12,21 @@ pageextension 60600 MyExtension extends "Customer Card"
                 Caption = 'Billing Cycle';
                 ToolTip = 'Specifies the value of the Billing Cycle field.';
             }
+            field("LPG Customer"; Rec."LPG Customer")
+            {
+                ApplicationArea = All;
+                ToolTip = 'Specifies the value of the LPG Customer field.';
+            }
+            field("Location Customer"; Rec."Location Customer")
+            {
+                ApplicationArea = All;
+                ToolTip = 'Specifies the value of the Location Customer field.';
+            }
+            field("Credit Customer"; Rec."Credit Customer")
+            {
+                ApplicationArea = All;
+                ToolTip = 'Specifies the value of the Credit Customer field.';
+            }
             field("System Type"; Rec."System Type")
             {
                 ApplicationArea = All;

@@ -32,6 +32,18 @@ tableextension 60600 CustomerEx extends Customer
         {
             DataClassification = ToBeClassified;
         }
+        field(50009; "LPG Customer"; Boolean)
+        {
+            DataClassification = ToBeClassified;
+        }
+        field(50010; "Credit Customer"; Boolean)
+        {
+            DataClassification = ToBeClassified;
+        }
+        field(50011; "Location Customer"; Boolean)
+        {
+            DataClassification = ToBeClassified;
+        }
 
     }
 

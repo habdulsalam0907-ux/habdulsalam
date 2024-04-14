@@ -34,8 +34,11 @@ pageextension 60624 "SimulatedProdLine" extends "Simulated Prod. Order Lines"
                     itemcode: Code[20];
                     transferOrderQuantity: Decimal;
                     finishedInserting: Boolean;
+                    inventorySetup: Record "Inventory Setup";
+                    noSeriesMgt: Codeunit NoSeriesManagement;
                 begin
                     if not confirm('Do you want to scan component for availability?', true) then exit;
+                    inventorySetup.Get();
                     case checkAvailability.RunModal() of
                         Action::OK:
                             begin
@@ -75,12 +78,14 @@ pageextension 60624 "SimulatedProdLine" extends "Simulated Prod. Order Lines"
                                     TransferOrder.Reset();
                                     lineNo := 1000;
                                     TransferOrder.Init();
-                                    TransferOrder.Insert();
+                                    // TransferOrder.Insert();
+                                    inventorySetup.TestField("Transfer Order Nos.");
+                                    noSeriesMgt.InitSeries(inventorySetup."Transfer Order Nos.", inventorySetup."Transfer Order Nos.", 0D, TransferOrder."No.", TransferOrder."No. Series");
                                     TransferOrder.Validate("Transfer-from Code", fromLocation);
                                     TransferOrder.Validate("Transfer-to Code", ToLocation);
-                                    TransferOrder."In-Transit Code" := 'GIT';
+                                    // TransferOrder."In-Transit Code" := 'GIT';
                                     TransferOrder."Direct Transfer" := true;
-                                    TransferOrder.Modify();
+                                    TransferOrder.insert();
                                     for count := 1 TO listofitemToTransfer.Count do begin
                                         if listofitemToTransfer.Get(count, JsonTokken) then begin
                                             if JsonTokken.AsObject().Get('isAvailable', JsonTokken2) then
@@ -117,6 +122,10 @@ pageextension 60624 "SimulatedProdLine" extends "Simulated Prod. Order Lines"
                                 exit;
                             end;
                     end;
+
+
+
+
                 end;
             }
 
