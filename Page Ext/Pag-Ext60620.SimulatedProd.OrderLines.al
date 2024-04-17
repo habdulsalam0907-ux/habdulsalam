@@ -13,7 +13,7 @@ pageextension 60624 "SimulatedProdLine" extends "Simulated Prod. Order Lines"
             action("Create Production Order")
             {
                 ApplicationArea = Manufacturing;
-                Caption = 'Create Production Order';
+                Caption = 'Scan Component';
                 Image = Create;
                 trigger OnAction()
                 var
@@ -48,11 +48,13 @@ pageextension 60624 "SimulatedProdLine" extends "Simulated Prod. Order Lines"
                                 component.SetRange("Prod. Order No.", Rec."Prod. Order No.");
                                 component.SetRange(Status, Rec.Status::Simulated);
                                 if component.FindSet() then begin
+                                    Message('%1', component);
                                     repeat
                                         RequiredQuantity := component."Remaining Quantity";
                                         itemLedger.Reset();
                                         itemLedger2.Reset();
                                         Clear(storeNotAvailableItem);
+                                        Message('Scanning %1 item with Required quantity of %2', component."Item No.", component."Remaining Quantity");
                                         itemLedger.SetRange("Item No.", component."Item No.");
                                         itemLedger.SetRange("Location Code", ToLocation);
                                         if itemLedger.FindFirst() then begin
