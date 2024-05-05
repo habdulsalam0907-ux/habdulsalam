@@ -44,6 +44,11 @@ tableextension 60600 CustomerEx extends Customer
         {
             DataClassification = ToBeClassified;
         }
+        field(50012; "Verification Status"; Option)
+        {
+            OptionCaption = 'Open,Pending Approval,Rejected,Verified';
+            OptionMembers = Open,"Pending Approval",Rejected,Verified;
+        }
 
     }
 

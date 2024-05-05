@@ -12,6 +12,12 @@ pageextension 60600 MyExtension extends "Customer Card"
                 Caption = 'Billing Cycle';
                 ToolTip = 'Specifies the value of the Billing Cycle field.';
             }
+            field("Verification Status"; Rec."Verification Status")
+            {
+                ApplicationArea = All;
+                ToolTip = 'Specifies the value of the Verification Status field.';
+                Editable = false;
+            }
             field("LPG Customer"; Rec."LPG Customer")
             {
                 ApplicationArea = All;
@@ -68,10 +74,23 @@ pageextension 60600 MyExtension extends "Customer Card"
             ApplicationArea = All;
         }
 
+
+    }
+    actions
+    {
+
     }
     trigger OnClosePage()
     begin
         if Rec."E-Mail" = '' then
             Error('The customer email address field must not be emptied!');
     end;
+
+    var
+        DocumentApprovalWorkflow: Codeunit 50000;
+        DocumentApprovalEntry: Record "REI-Document Approval Entry";
+        Customer: Record Customer;
+        RecRef: RecordRef;
+        RecID: RecordID;
+        canPost, cansendApproval, canApproval : Boolean;
 }

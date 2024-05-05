@@ -58,6 +58,40 @@ tableextension 60602 VendorExt extends Vendor
             DataClassification = ToBeClassified;
             Caption = 'Maintenance Vendor';
         }
+        field(60613; "Means Of Identification"; Option)
+        {
+            OptionMembers = Passport,"Driver License","Voter's Card","National ID Card";
+        
+        }
+        field(60614; "Passport ID"; code[50])
+        {
+            DataClassification = ToBeClassified;
+        }
+        field(60615; NIN; code[50])
+        {
+            DataClassification = ToBeClassified;
+        }
+        field(60616; "Voter's ID"; code[50])
+        {
+            DataClassification = ToBeClassified;
+        }
+        field(60617; "Driver License ID"; code[50])
+        {
+            DataClassification = ToBeClassified;
+        }
+
+        modify("Partner Type")
+        {
+            Caption = 'Business Type';
+        }
+        modify("Preferred Bank Account Code")
+        {
+            Caption = 'Preferred Bank Account  ';
+        }
+        modify(GLN)
+        {
+            Caption = 'Vendor TIN';
+        }
     }
     var
         myInt: Integer;
