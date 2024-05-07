@@ -178,7 +178,7 @@ pageextension 60602 FixedAssetCardExt extends "Fixed Asset Card"
             if FADeprBook.Find('-') then begin
                 repeat
                     if FADeprBook."Disposal Date" = 0D then begin
-                        if FADeprBook."Last Retail Cost Date" > 0D then begin
+                        if FADeprBook."Last Acquisition Cost Date" > 0D then begin
                             FADeprBook.CalcFields("Book Value", "Depreciable Basis");
                             BookValue += FADeprBook."Book Value";
                         end;
