@@ -499,9 +499,10 @@ tableextension 60603 EmployeeTabExt extends Employee
         {
             DataClassification = ToBeClassified;
         }
-        field(50092; "Bank Name"; Code[100])
+        field(50092; "Bank Name"; Code[50])
         {
             DataClassification = ToBeClassified;
+            TableRelation = "Employee Bank Name";
         }
         field(50093; "Manager ID"; Code[50])
         {
@@ -527,9 +528,10 @@ tableextension 60603 EmployeeTabExt extends Employee
             DataClassification = ToBeClassified;
         }
 
-        field(50095; "Tax Authority"; Text[100])
+        field(50095; "Tax Authority"; code[50])
         {
             DataClassification = ToBeClassified;
+            TableRelation = "Employee Tax Authority";
         }
         field(50101; "Dependant 1 Sex"; Option)
         {
@@ -773,6 +775,21 @@ tableextension 60603 EmployeeTabExt extends Employee
         {
             Editable = false;
         }
+        field(50132; "Retirement Age"; Integer)
+        {
+            trigger OnValidate()
+            begin
+                If "Retirement Age" < 0 then
+                    Error('This msut be a positive value!!!');
+                UpdateRetirementBirthDateAndAge();
+            end;
+        }
+        field(50133; "Retirement Birth Date"; Date)
+        {
+            Caption = 'Confirmation Date';
+            DataClassification = ToBeClassified;
+            Editable = false;
+        }
     }
 
     var
@@ -780,4 +797,31 @@ tableextension 60603 EmployeeTabExt extends Employee
         CIT: Record "Country/Region";
         UserSetUp: Record "User Setup";
         Emp: record Employee;
+
+    procedure GetYearsInService() YearsInService: Integer
+    var
+        AgeCalc: Codeunit "Age Calculator";
+    begin
+        If "Employment Date" <> 0D then
+            YearsInService := AgeCalc.CalculateAgeFromBirthDate("Employment Date")
+        else
+            YearsInService := 0;
+        exit(YearsInService);
+    end;
+
+    procedure UpdateRetirementBirthDateAndAge()
+    var
+        HRSetup: Record "REI-HR Setup";
+    begin
+        If "Retirement Age" <> 0 then begin
+            "Retirement Birth Date" := CalcDate(StrSubstNo('<%1M>',"Retirement Age"), "Birth Date");
+            Modify();
+        end else begin
+            HRSetup.Get();
+            HRSetup.TestField("Retirement Age");
+            "Retirement Age" := HRSetup."Retirement Age";
+            "Retirement Birth Date" := CalcDate(StrSubstNo('<%1M>',"Retirement Age"), "Birth Date");
+            Modify();
+        end;
+    end;
 }

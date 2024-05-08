@@ -44,5 +44,13 @@ permissionset 60600 MasterDataCust
         page "Job Grade & Benefits Setup"=X,
         page "Job Grade Levels"=X,
         page "Job Grades"=X,
-        page "Production Batch No. Archives"=X;
+        page "Production Batch No. Archives"=X,
+        tabledata "Employee Bank Name"=RIMD,
+        tabledata "Employee Tax Authority"=RIMD,
+        table "Employee Bank Name"=X,
+        table "Employee Tax Authority"=X,
+        page "Check Component Availability"=X,
+        page "Employee Bank Name"=X,
+        page "Employee Tax Authority"=X,
+        codeunit "Customer Approval"=X;
 }
