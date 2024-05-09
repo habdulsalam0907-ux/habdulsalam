@@ -58,5 +58,14 @@ table 60607 "Employee Role History"
         {
         }
     }
+    trigger OnDelete()
+    begin
+        UserSetup.Get(UserId);
+        If Not (UserSetup."System Admin" or UserSetup."HR Manager" or UserSetup."Head of Corp Services") then
+            Error('You are not authorised to perform this action!!!');
+    end;
+
+    var
+        UserSetup: Record "User Setup";
 }
 

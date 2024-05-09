@@ -4,7 +4,7 @@ page 60608 "Employee Role History"
     SourceTable = "Employee Role History";
     Caption = 'Employee Role History';
     Editable = false;
-    DeleteAllowed = false;
+    // DeleteAllowed = false;
     InsertAllowed = false;
     ModifyAllowed = false;
     ApplicationArea = All;
