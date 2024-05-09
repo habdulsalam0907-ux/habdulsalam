@@ -8,6 +8,7 @@ page 60608 "Employee Role History"
     InsertAllowed = false;
     ModifyAllowed = false;
     ApplicationArea = All;
+    UsageCategory = ReportsAndAnalysis;
 
 
     layout
@@ -16,6 +17,14 @@ page 60608 "Employee Role History"
         {
             repeater(Group)
             {
+                field("Employee No"; Rec."Employee No")
+                {
+                    ToolTip = 'Specifies the value of the Employee No field.';
+                }
+                field("Line No."; Rec."Line No.")
+                {
+                    ToolTip = 'Specifies the value of the Line No. field.';
+                }
                 field("New Role Description"; Rec."New Role Description")
                 {
                     ApplicationArea = All;
@@ -54,5 +63,28 @@ page 60608 "Employee Role History"
             }
         }
     }
+
+    var
+        UserSetup: Record "User Setup";
+        HRSetup: Record "REI-HR Setup";
+
+    trigger OnOpenPage()
+    begin
+        UserSetup.Reset;
+        UserSetup.Get(UserId);
+        if (UserSetup."HR Manager" or UserSetup."Payroll Officer" or UserSetup.CEO or UserSetup."Head of Corp Services") Or
+            (UserId IN [HRSetup."HCS User ID", 
+                        HRSetup."HR Manager ID",
+                        HRSetup."CEO User ID"]) then 
+        begin
+            exit;
+        end else begin // User will see record relating User ID
+                       //even after having permission to view others record
+            UserSetup.TestField("Employee No.");
+            Rec.FilterGroup(10);
+            Rec.SetRange("Employee No", UserSetup."Employee No.");
+            Rec.FilterGroup(0);
+        end;
+    end;
 }
 

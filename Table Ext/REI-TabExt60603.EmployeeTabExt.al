@@ -80,10 +80,7 @@ tableextension 60603 EmployeeTabExt extends Employee
 
             trigger OnValidate()
             begin
-                /* If "Salary Net Pay" <> 0 then
-                    "Annual Leave Allowance" := "Salary Net Pay" * 0.15
-                else
-                    Clear("Annual Leave Allowance"); */
+                "Annual Gross" := "Salary Net Pay" * 12;
             end;
         }
         field(50001; "Employee Balance"; Decimal)
@@ -108,6 +105,11 @@ tableextension 60603 EmployeeTabExt extends Employee
         {
             Caption = 'Annual Gross';
             DataClassification = ToBeClassified;
+
+            trigger OnValidate()
+            begin
+                "Salary Net Pay" := "Salary Net Pay" * 12;
+            end;
         }
         field(50004; "Annual Basic Salary"; Decimal)
         {
