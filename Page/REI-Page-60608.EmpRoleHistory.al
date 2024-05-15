@@ -3,7 +3,7 @@ page 60608 "Employee Role History"
     PageType = List;
     SourceTable = "Employee Role History";
     Caption = 'Employee Role History';
-    Editable = false;
+    // Editable = false;
     // DeleteAllowed = false;
     InsertAllowed = false;
     ModifyAllowed = false;

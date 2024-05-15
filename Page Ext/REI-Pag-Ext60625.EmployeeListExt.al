@@ -14,6 +14,22 @@ pageextension 60625 EmployeeListExt extends "Employee List"
                 ApplicationArea = All;
                 ToolTip = 'Specifies the value of the Shortcut Dimension 3 Code field.';
             }
+            field("Employment Type"; Rec."Employment Type")
+            {
+                ApplicationArea = All;
+                ToolTip = 'Specifies the value of the Employment Type.';
+            }
+            field("Contract Currency Code"; Rec."Contract Currency Code")
+            {
+                ApplicationArea = All;
+                ToolTip = 'Specifies the value of the Contract/Salary Currency Code field.';
+                Visible = false;
+            }
+            field("Tax Authority"; Rec."Tax Authority")
+            {
+                ApplicationArea = All;
+                ToolTip = 'Specifies the value of the Tax Authority field.';
+            }
         }
 
     }

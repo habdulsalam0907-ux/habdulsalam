@@ -8,6 +8,7 @@ pageextension 60605 EmployeeCardExt extends "Employee Card"
             {
                 ApplicationArea = All;
                 ToolTip = 'Specifies the value of the Manager User ID field.';
+                ShowMandatory = true;
             }
             field("Applicable Job Grade"; Rec."Applicable Job Grade")
             {
@@ -24,6 +25,7 @@ pageextension 60605 EmployeeCardExt extends "Employee Card"
             {
                 ApplicationArea = All;
                 ToolTip = 'Specifies the value of the Job Application Source field.';
+                ShowMandatory = true;
             }
             field("Manager No."; Rec."Manager No.")
             {
@@ -31,6 +33,7 @@ pageextension 60605 EmployeeCardExt extends "Employee Card"
                 ApplicationArea = All;
                 Description = 'Manager No. for the employee';
                 ToolTip = 'Specifies the Manager No. for the employee';
+                ShowMandatory = true;
             }
             field("Manager Name"; Rec."Manager Name")
             {
@@ -43,16 +46,19 @@ pageextension 60605 EmployeeCardExt extends "Employee Card"
             {
                 ApplicationArea = All;
                 ToolTip = 'Specifies the value of the Manager''s Email field.';
+                ShowMandatory = true;
             }
             field("Shortcut Dimension 1 Code"; Rec."Shortcut Dimension 1 Code")
             {
                 ApplicationArea = All;
                 ToolTip = 'Specifies the value of the Shortcut Dimension 1 Code field.';
+                ShowMandatory = true;
             }
             field("Shortcut Dimension 2 Code"; Rec."Shortcut Dimension 2 Code")
             {
                 ApplicationArea = All;
                 ToolTip = 'Specifies the value of the Shortcut Dimension 2 Code field.';
+                ShowMandatory = true;
             }
             field("Shortcut Dimension 3 Code"; Rec."Shortcut Dimension 3 Code")
             {
@@ -63,6 +69,7 @@ pageextension 60605 EmployeeCardExt extends "Employee Card"
             {
                 ApplicationArea = All;
                 ToolTip = 'Specifies the value of the Shortcut Dimension 3 Code field.';
+                ShowMandatory = true;
             }
         }
         addafter(Gender)
@@ -72,24 +79,28 @@ pageextension 60605 EmployeeCardExt extends "Employee Card"
                 ApplicationArea = All;
                 ToolTip = 'Specifies the value of the Nationality field.';
                 Editable = EditableAcess;
+                ShowMandatory = true;
             }
             field("Nationality Text"; Rec."Nationality Text")
             {
                 Caption = 'Nationality Details';
                 ApplicationArea = All;
                 ToolTip = 'Specifies the value of the Nationality Name field.';
+                ShowMandatory = true;
             }
             field("State Of Origin"; Rec."State Of Origin")
             {
                 ApplicationArea = All;
                 ToolTip = 'Specifies the value of the State Of Origin field.';
                 Editable = EditableAcess;
+                ShowMandatory = true;
             }
             field(LGA; Rec.LGA)
             {
                 ApplicationArea = All;
                 ToolTip = 'Specifies the value of the Local Government Area field.';
                 Editable = EditableAcess;
+                ShowMandatory = true;
             }
             field("Employee Balance"; Rec."Employee Balance LCY")
             {
@@ -201,11 +212,13 @@ pageextension 60605 EmployeeCardExt extends "Employee Card"
             {
                 ApplicationArea = All;
                 ToolTip = 'Specifies the value of the Employment Type.';
+                ShowMandatory = true;
             }
             field("Confirmation Status"; Rec."Confirmation Status")
             {
                 ApplicationArea = All;
                 ToolTip = 'Specifies the value of the Confirmation Status.';
+                ShowMandatory = true;
             }
             field("Date of Joining the company"; Rec."Date of Joining the company")
             {
@@ -219,6 +232,7 @@ pageextension 60605 EmployeeCardExt extends "Employee Card"
                 ApplicationArea = All;
                 ToolTip = 'Specifies the value of the Internship Duration.';
                 Editable = (Rec."Employment Type" = Rec."Employment Type"::"Internship");
+                ShowMandatory = true;
             }
             field("Internship Due-Date"; Rec."Internship Due-Date")
             {
@@ -287,6 +301,7 @@ pageextension 60605 EmployeeCardExt extends "Employee Card"
             {
                 ApplicationArea = All;
                 ToolTip = 'Specifies the value of the Marital Status field.';
+                ShowMandatory = true;
             }
         }
         addafter("Bank Account No.")
@@ -294,11 +309,13 @@ pageextension 60605 EmployeeCardExt extends "Employee Card"
             field("Bank Account Name"; Rec."Bank Account Name")
             {
                 ApplicationArea = All;
+                ShowMandatory = true;
             }
             field("Bank Name"; Rec."Bank Name")
             {
                 ApplicationArea = All;
                 ToolTip = 'Specifies the value of the Bank Name field.';
+                ShowMandatory = true;
             }
             field("Bank Sort Code"; Rec."Bank Sort Code")
             {
@@ -317,17 +334,19 @@ pageextension 60605 EmployeeCardExt extends "Employee Card"
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Tax Authority field.';
+                    ShowMandatory = true;
                 }
                 field("Tax ID"; Rec."Tax ID")
                 {
                     Caption = 'Tax Identification Number';
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Tax ID Number field.';
+                    ShowMandatory = true;
                 }
                 field("PFA Code"; Rec."PFA Code")
                 {
                     ApplicationArea = All;
-                    Visible = false;
+                    ShowMandatory = true;
                 }
                 field("PFA Administrator"; Rec."PFA Administrator")
                 {
@@ -337,6 +356,7 @@ pageextension 60605 EmployeeCardExt extends "Employee Card"
                 {
                     ApplicationArea = All;
                     Caption = 'PFA/RSA No.';
+                    ShowMandatory = true;
                 }
                 field("NHF Number"; Rec."NHF Number")
                 {
@@ -347,12 +367,14 @@ pageextension 60605 EmployeeCardExt extends "Employee Card"
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the BVN field.';
+                    ShowMandatory = true;
                 }
                 field("NIN"; Rec."NIN")
                 {
                     Caption = 'NIN';
                     ToolTip = 'Specifies the value of the BVN field.';
                     ApplicationArea = All;
+                    ShowMandatory = true;
                 }
                 group(AnnualPayDetails)
                 {
@@ -362,11 +384,13 @@ pageextension 60605 EmployeeCardExt extends "Employee Card"
                     {
                         ApplicationArea = All;
                         ToolTip = 'Specifies the value of the Contract/Salary Currency Code field.';
+                        ShowMandatory = true;
                     }
                     field("Annual Gross"; Rec."Annual Gross")
                     {
                         ApplicationArea = All;
                         ToolTip = 'Specifies the value of the Annual Gross field.';
+                        ShowMandatory = true;
                     }
                     field("Annual Basic Salary"; Rec."Annual Basic Salary")
                     {
@@ -425,16 +449,19 @@ pageextension 60605 EmployeeCardExt extends "Employee Card"
                     ToolTip = 'Specifies the value of the Medical List field.';
                     Multiline = true;
                     Editable = IsMedical;
+                    ShowMandatory = true;
                 }
                 field(Genotype; Rec.Genotype)
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Genotype field.';
+                    ShowMandatory = true;
                 }
                 field("Blood Type"; Rec."Blood Type")
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Blood Type field.';
+                    ShowMandatory = true;
                 }
             }
         }
@@ -446,6 +473,7 @@ pageextension 60605 EmployeeCardExt extends "Employee Card"
                 ApplicationArea = All;
                 Description = 'Monthly Gross Salary for the employee';
                 ToolTip = 'Specifies the Monthly Gross Salary for the employee';
+                ShowMandatory = true;
             }
         }
         addafter(LGA)
@@ -455,6 +483,7 @@ pageextension 60605 EmployeeCardExt extends "Employee Card"
             {
                 ApplicationArea = All;
                 ToolTip = 'Specifies the value of the Religion field.';
+                ShowMandatory = true;
             }
         }
 
@@ -464,7 +493,13 @@ pageextension 60605 EmployeeCardExt extends "Employee Card"
             {
                 ApplicationArea = All;
                 ToolTip = 'Specifies the value of the Business Area field.';
+                ShowMandatory = true;
             }
+        }
+        modify("Birth Date")
+        {
+            ShowMandatory = true;
+
         }
         #region ModifyingFieldGroupProperties
         modify(General)
@@ -685,5 +720,22 @@ pageextension 60605 EmployeeCardExt extends "Employee Card"
         SetUserAccessLevel();
     end;
     #endregion OnAfterGetRecord
+
+    trigger OnClosePage()
+    begin
+        Rec.TestField("Birth Date");
+        Rec.TestField("Company E-Mail");
+        Rec.TestField("Employment Date");
+        Rec.TestField("Shortcut Dimension 1 Code");
+        Rec.TestField("Shortcut Dimension 2 Code");
+        Rec.TestField("Shortcut Dimension 5 Code");
+        Rec.TestField("First Name");
+        Rec.TestField("Last Name");
+        Rec.TestField("Tax Authority");
+        Rec.TestField("Contract Currency Code");
+        Rec.TestField("Bank Account Name");
+        Rec.TestField("Bank Account No.");
+        Rec.TestField("Annual Gross");
+    end;
 
 }

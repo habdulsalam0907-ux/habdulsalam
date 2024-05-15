@@ -52,5 +52,18 @@ permissionset 60600 MasterDataCust
         page "Check Component Availability"=X,
         page "Employee Bank Name"=X,
         page "Employee Tax Authority"=X,
-        codeunit "Customer Approval"=X;
+        codeunit "Customer Approval"=X,
+        tabledata "Pension Fund Administrator"=RIMD,
+        table "Pension Fund Administrator"=X,
+        report "Inventory Avalability"=X,
+        page "Pension Fund Administrator"=X,
+        tabledata "Address States/County"=RIMD,
+        tabledata "Employee Religion"=RIMD,
+        tabledata "Local Government Area"=RIMD,
+        table "Address States/County"=X,
+        table "Employee Religion"=X,
+        table "Local Government Area"=X,
+        page "Employee Religion List"=X,
+        page "Local Government Area List"=X,
+        page "State/County List"=X;
 }
