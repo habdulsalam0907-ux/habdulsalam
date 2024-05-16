@@ -71,6 +71,12 @@ pageextension 60605 EmployeeCardExt extends "Employee Card"
                 ToolTip = 'Specifies the value of the Shortcut Dimension 3 Code field.';
                 ShowMandatory = true;
             }
+            field("Employee Job Location"; Rec."Employee Job Location")
+            {
+                ApplicationArea = All;
+                ToolTip = 'Specifies the value of the Employee Job Location field.';
+                ShowMandatory = true;
+            }
         }
         addafter(Gender)
         {
@@ -736,6 +742,7 @@ pageextension 60605 EmployeeCardExt extends "Employee Card"
         Rec.TestField("Bank Account Name");
         Rec.TestField("Bank Account No.");
         Rec.TestField("Annual Gross");
+        Rec.TestField("Employee Job Location");
     end;
 
 }

@@ -814,6 +814,12 @@ tableextension 60603 EmployeeTabExt extends Employee
             DataClassification = ToBeClassified;
             Editable = false;
         }
+        field(50134; "Employee Job Location"; Code[30])
+        {
+            Caption = 'Employee Job Location';
+            DataClassification = ToBeClassified;
+            TableRelation = "Employee Job Location";
+        }
     }
 
     var

@@ -30,6 +30,11 @@ pageextension 60625 EmployeeListExt extends "Employee List"
                 ApplicationArea = All;
                 ToolTip = 'Specifies the value of the Tax Authority field.';
             }
+            field("Employee Job Location"; Rec."Employee Job Location")
+            {
+                ApplicationArea = All;
+                ToolTip = 'Specifies the value of the Employee Job Location field.';
+            }
         }
 
     }

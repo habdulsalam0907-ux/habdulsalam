@@ -65,5 +65,8 @@ permissionset 60600 MasterDataCust
         table "Local Government Area"=X,
         page "Employee Religion List"=X,
         page "Local Government Area List"=X,
-        page "State/County List"=X;
+        page "State/County List"=X,
+        tabledata "Employee Job Location"=RIMD,
+        table "Employee Job Location"=X,
+        page "Employee Job Location"=X;
 }
