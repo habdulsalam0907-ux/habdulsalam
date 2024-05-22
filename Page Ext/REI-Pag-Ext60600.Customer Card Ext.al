@@ -5,13 +5,6 @@ pageextension 60600 MyExtension extends "Customer Card"
         // Add changes to page layout here
         addafter(Blocked)
         {
-            // Add changes to page layout here
-            field("Billing Cycle"; Rec."Billing Cycle")
-            {
-                ApplicationArea = All;
-                Caption = 'Billing Cycle';
-                ToolTip = 'Specifies the value of the Billing Cycle field.';
-            }
             field("Verification Status"; Rec."Verification Status")
             {
                 ApplicationArea = All;
@@ -26,18 +19,13 @@ pageextension 60600 MyExtension extends "Customer Card"
             field("Location Customer"; Rec."Location Customer")
             {
                 ApplicationArea = All;
+                Caption = 'Customer Location';
                 ToolTip = 'Specifies the value of the Location Customer field.';
             }
             field("Credit Customer"; Rec."Credit Customer")
             {
                 ApplicationArea = All;
                 ToolTip = 'Specifies the value of the Credit Customer field.';
-            }
-            field("System Type"; Rec."System Type")
-            {
-                ApplicationArea = All;
-                Caption = 'System Type';
-                ToolTip = 'Specifies the value of the System Type field.';
             }
             field("Product/Services"; Rec."Product/Services")
             {
