@@ -36,7 +36,7 @@ pageextension 60624 "SimulatedProdLine" extends "Simulated Prod. Order Lines"
                     transferOrderQuantity: Decimal;
                     finishedInserting: Boolean;
                     inventorySetup: Record "Inventory Setup";
-                    noSeriesMgt: Codeunit NoSeriesManagement;
+                    noSeriesMgt: Codeunit "No. Series";
                     Subject: Text;
                     EmailBody: Text;
                     Email: Codeunit Email;

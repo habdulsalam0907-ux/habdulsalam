@@ -120,10 +120,6 @@ page 60605 "Leased Asset Composition Line"
                 begin
                     FilterText := StrSubstNo('Fixed_Asset_Code eq ''%1''', Rec."Fixed Asset Code");
                     EditInExcel.EditPageInExcel(CurrPage.ObjectId(true), CurrPage.ObjectId(false), FilterText);
-
-                    // EditInExcelFilters.AddField('Fixed_Asset_Code',Enum::"Edit in Excel Filter Type"::Equal,
-                    //         Rec."Fixed Asset Code",Enum::"Edit in Excel Edm Type"::"Edm.String");
-                    // EditInExcel.EditPageInExcel(CurrPage.ObjectId(true), CurrPage.ObjectId(false),EditInExcelFilters);
                 end;
             }
         }
