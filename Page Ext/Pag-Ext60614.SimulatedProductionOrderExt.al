@@ -38,7 +38,7 @@ pageextension 60614 "Simulated Production Order Ext" extends "Simulated Producti
         Text011: Label 'Quantity to produce is empty!';
         CustomSetup: Record "Custom Setup";
         BatchNo: Code[100];
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: codeunit "No. Series";
         ProdOrderBatch: Record "Production Bach Order Archive";
 
     local procedure GenProdOrderBatchNo()
