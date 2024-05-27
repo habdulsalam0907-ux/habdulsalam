@@ -108,7 +108,7 @@ tableextension 60603 EmployeeTabExt extends Employee
 
             trigger OnValidate()
             begin
-                "Salary Net Pay" := "Salary Net Pay" * 12;
+                "Salary Net Pay" := "Annual Gross" / 12;
             end;
         }
         field(50004; "Annual Basic Salary"; Decimal)
@@ -317,16 +317,23 @@ tableextension 60603 EmployeeTabExt extends Employee
         {
             Caption = 'State Of Origin';
             DataClassification = ToBeClassified;
+            TableRelation = "Address States/County";
+        }
+        modify(County)
+        {
+            TableRelation = "Address States/County";
         }
         field(50050; "LGA"; Text[50])
         {
             Caption = 'Local Government Area';
             DataClassification = ToBeClassified;
+            TableRelation = "Local Government Area";
         }
         field(50051; "Religion"; Text[50])
         {
             Caption = 'Religion';
             DataClassification = ToBeClassified;
+            TableRelation = "Employee Religion";
         }
         field(50052; "Residential Address 3"; Text[30])
         {
@@ -437,21 +444,22 @@ tableextension 60603 EmployeeTabExt extends Employee
         field(50068; "PFA Administrator"; Text[200])
         {
             DataClassification = ToBeClassified;
+            Editable = false;
         }
         field(50069; "PFA Code"; Code[20])
         {
             DataClassification = ToBeClassified;
-            // TableRelation = "Pension Administrators";
+            TableRelation = "Pension Fund Administrator";
 
-            // trigger OnValidate()
-            // var
-            //     PFA: Record "Pension Administrators";
-            // begin
-            //     If PFA.Get("PFA Code") then
-            //         "PFA Administrator" := PFA.Name
-            //     else
-            //         "PFA Administrator" := '';
-            // end;
+            trigger OnValidate()
+            var
+                PFA: Record "Pension Fund Administrator";
+            begin
+                If PFA.Get("PFA Code") then
+                    "PFA Administrator" := PFA.Name
+                else
+                    "PFA Administrator" := '';
+            end;
         }
         field(50070; "PFA No."; Code[30])
         {
@@ -665,6 +673,13 @@ tableextension 60603 EmployeeTabExt extends Employee
                 Validate("Global Dimension 1 Code", "Shortcut Dimension 1 Code");
             end;
         }
+        modify("Global Dimension 1 Code")
+        {
+            trigger OnAfterValidate()
+            begin
+                "Shortcut Dimension 1 Code" := "Global Dimension 1 Code";
+            end;
+        }
         field(50116; "Shortcut Dimension 2 Code"; Code[30])
         {
             Caption = 'Shortcut Dimension 2 Code';
@@ -675,6 +690,13 @@ tableextension 60603 EmployeeTabExt extends Employee
             trigger OnValidate()
             begin
                 Validate("Global Dimension 2 Code", "Shortcut Dimension 2 Code");
+            end;
+        }
+        modify("Global Dimension 2 Code")
+        {
+            trigger OnAfterValidate()
+            begin
+                "Shortcut Dimension 2 Code" := "Global Dimension 2 Code";
             end;
         }
         field(50117; "Shortcut Dimension 3 Code"; Code[30])
@@ -791,6 +813,12 @@ tableextension 60603 EmployeeTabExt extends Employee
             Caption = 'Confirmation Date';
             DataClassification = ToBeClassified;
             Editable = false;
+        }
+        field(50134; "Employee Job Location"; Code[30])
+        {
+            Caption = 'Employee Job Location';
+            DataClassification = ToBeClassified;
+            TableRelation = "Employee Job Location";
         }
     }
 

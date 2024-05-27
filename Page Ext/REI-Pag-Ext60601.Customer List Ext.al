@@ -4,19 +4,7 @@ pageextension 60601 CustListExt extends "Customer List"
     {
         addafter(Contact)
         {
-            // Add changes to page layout here
-            field("Billing Cycle"; Rec."Billing Cycle")
-            {
-                ApplicationArea = All;
-                Caption = 'Billing Cycle';
-                ToolTip = 'Specifies the value of the Billing Cycle field.';
-            }
-            field("System Type"; Rec."System Type")
-            {
-                ApplicationArea = All;
-                Caption = 'System Type';
-                ToolTip = 'Specifies the value of the System Type field.';
-            }
+            // Add changes to page layout heRE
             field("Product/Services"; Rec."Product/Services")
             {
                 ApplicationArea = All;
@@ -29,21 +17,7 @@ pageextension 60601 CustListExt extends "Customer List"
                 Caption = 'Customer Status';
                 ToolTip = 'Specifies the value of the Customer Status field.';
             }
-            field("Customer Type"; Rec."Customer Type")
-            {
-                ApplicationArea = All;
-                Caption = 'Customer Type';
-                ToolTip = 'Specifies the value of the Customer Type field.';
-            }
         }
 
     }
-
-    actions
-    {
-        // Add changes to page actions here
-    }
-
-    var
-        myInt: Integer;
 }
