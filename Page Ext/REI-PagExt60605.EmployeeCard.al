@@ -2,6 +2,14 @@ pageextension 60605 EmployeeCardExt extends "Employee Card"
 {
     layout
     {
+        addafter("No.")
+        {
+            field("Custom Title/Honorific"; Rec."Custom Title/Honorific")
+            {
+                ApplicationArea = All;
+                ToolTip = 'Specifies the value of the Title field.', Comment = '%';
+            }
+        }
         addafter("Job Title")
         {
             field("Manager ID"; Rec."Manager ID")
@@ -287,6 +295,7 @@ pageextension 60605 EmployeeCardExt extends "Employee Card"
                 ApplicationArea = All;
                 ToolTip = 'Specifies if employee is confirmed';
                 Editable = false;
+                visible = false;
             }
             field("Years In Service"; Rec.GetYearsInService())
             {
@@ -317,11 +326,16 @@ pageextension 60605 EmployeeCardExt extends "Employee Card"
                 ApplicationArea = All;
                 ShowMandatory = true;
             }
+            field("Bank Code"; Rec."Bank Code")
+            {
+                ApplicationArea = All;
+                ToolTip = 'Specifies the value of the Bank Code field.';
+                ShowMandatory = true;
+            }
             field("Bank Name"; Rec."Bank Name")
             {
                 ApplicationArea = All;
-                ToolTip = 'Specifies the value of the Bank Name field.';
-                ShowMandatory = true;
+                ToolTip = 'Specifies the value of the Bank Name field.', Comment = '%';
             }
             field("Bank Sort Code"; Rec."Bank Sort Code")
             {
@@ -739,7 +753,7 @@ pageextension 60605 EmployeeCardExt extends "Employee Card"
         Rec.TestField("Last Name");
         Rec.TestField("Tax Authority");
         Rec.TestField("Contract Currency Code");
-        Rec.TestField("Bank Account Name");
+        Rec.TestField("Bank Code");
         Rec.TestField("Bank Account No.");
         Rec.TestField("Annual Gross");
         Rec.TestField("Employee Job Location");

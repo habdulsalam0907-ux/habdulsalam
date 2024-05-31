@@ -509,10 +509,9 @@ tableextension 60603 EmployeeTabExt extends Employee
         {
             DataClassification = ToBeClassified;
         }
-        field(50092; "Bank Name"; Code[50])
+        field(50092; "Bank Name"; Text[100])
         {
             DataClassification = ToBeClassified;
-            TableRelation = "Employee Bank Name";
         }
         field(50093; "Manager ID"; Code[50])
         {
@@ -739,7 +738,7 @@ tableextension 60603 EmployeeTabExt extends Employee
         }
         field(50121; "Confirmed Employee"; Boolean)
         {
-            Caption = 'Confirmation Employee';
+            Caption = 'Confirmed Employee';
             DataClassification = ToBeClassified;
         }
         field(50122; "Length Of Service"; Text[50])
@@ -757,9 +756,24 @@ tableextension 60603 EmployeeTabExt extends Employee
             Caption = 'Citizenship Text';
             DataClassification = ToBeClassified;
         }
-        field(50125; "Bank Code"; Code[20])
+        field(50125; "Bank Code"; Code[50])
         {
             DataClassification = ToBeClassified;
+            TableRelation = "Employee Bank Name";
+
+            trigger OnValidate()
+            var
+                EmpBank: Record "Employee Bank Name";
+            begin
+                If EmpBank.Get("Bank Code") then begin
+                    "Bank Name" := EmpBank.Description;
+                    If "Bank Sort Code" = '' then
+                        "Bank Sort Code" := EmpBank."Bank Sort Code";
+                end else begin
+                    "Bank Name" := '';
+                    "Bank Sort Code" := '';
+                end;
+            end;
         }
         field(50126; "Bank Sort Code"; Code[20])
         {
@@ -772,10 +786,16 @@ tableextension 60603 EmployeeTabExt extends Employee
             DataClassification = ToBeClassified;
             CaptionClass = '1,2,5';
         }
-        /* field(50128; "C-Executive Member"; Boolean)
+        field(50128; "Custom Title/Honorific"; Enum "Titles/Honorifics")
         {
             DataClassification = ToBeClassified;
-        } */
+            caption = 'Title';
+
+            trigger OnValidate()
+            begin
+                Title := Format("Custom Title/Honorific");
+            end;
+        }
         field(50129; "Job Application Source"; Text[100])
         {
             DataClassification = ToBeClassified;
@@ -851,6 +871,14 @@ tableextension 60603 EmployeeTabExt extends Employee
             HRSetup.TestField("Retirement Age");
             "Retirement Age" := HRSetup."Retirement Age";
             "Retirement Birth Date" := CalcDate(StrSubstNo('<%1M>',"Retirement Age"), "Birth Date");
+            Modify();
+        end;
+    end;
+
+    procedure UpdateEmployeeBankAccountName()
+    begin
+        If "Bank Account Name" = '' then begin
+            "Bank Account Name" := FullName();
             Modify();
         end;
     end;

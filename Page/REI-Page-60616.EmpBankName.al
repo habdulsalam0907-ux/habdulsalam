@@ -20,6 +20,10 @@ page 60616 "Employee Bank Name"
                 {
                     ToolTip = 'Specifies the value of the Description field.';
                 }
+                field("Bank Sort Code"; Rec."Bank Sort Code")
+                {
+                    ToolTip = 'Specifies the value of the Bank Sort Code field.', Comment = '%';
+                }
             }
         }
     }

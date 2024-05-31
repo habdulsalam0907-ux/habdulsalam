@@ -13,6 +13,10 @@ Table 60613 "Employee Bank Name"
         {
             DataClassification = ToBeClassified;
         }
+        field(3; "Bank Sort Code"; Code[20])
+        {
+            DataClassification = ToBeClassified;
+        }
     }
 
     keys
@@ -25,6 +29,6 @@ Table 60613 "Employee Bank Name"
 
     fieldgroups
     {
-        fieldgroup(DropDown; Code, Description) { }
+        fieldgroup(DropDown; Code, Description, "Bank Sort Code") { }
     }
 }
