@@ -5,16 +5,28 @@ tableextension 60642 "Item Journal Ext" extends "Item Journal Line"
         // Add changes to table fields here
         field(50000; "Planned Quantity"; Decimal)
         {
-
+            Editable = false;
         }
         field(50001; "Excess  Qty"; Decimal)
         {
+
 
         }
         field(50002; "Loss  Qty"; Decimal)
         {
 
         }
+        field(50003; "Output Type"; Option)
+        {
+            OptionCaption = 'Excess,Loss,Normal';
+            OptionMembers = Excess,Loss,Normal;
+
+        }
+        field(50004; "Component Variance"; Decimal)
+        {
+            Editable = false;
+        }
+
 
     }
 

@@ -8,10 +8,10 @@ pageextension 60630 ProdOrderComponents extends "Prod. Order Components"
             field("Actual Quantity"; Rec."Actual Quantity")
             {
 
-
             }
             field(Variance; Rec."Variance Qty")
             {
+                Editable = false;
 
             }
         }
