@@ -234,31 +234,37 @@ pageextension 60605 EmployeeCardExt extends "Employee Card"
                 ToolTip = 'Specifies the value of the Confirmation Status.';
                 ShowMandatory = true;
             }
-            field("Date of Joining the company"; Rec."Date of Joining the company")
+            group(InternshipRelated)
             {
-                ApplicationArea = All;
-                ToolTip = 'Specifies the value of the Date of Joining the company.';
+                ShowCaption = false;
                 Editable = (Rec."Employment Type" = Rec."Employment Type"::"Internship");
-                ShowMandatory = true;
-            }
-            field("Internship Duration"; Rec."Internship Duration")
-            {
-                ApplicationArea = All;
-                ToolTip = 'Specifies the value of the Internship Duration.';
-                Editable = (Rec."Employment Type" = Rec."Employment Type"::"Internship");
-                ShowMandatory = true;
-            }
-            field("Internship Due-Date"; Rec."Internship Due-Date")
-            {
-                ApplicationArea = All;
-                ToolTip = 'Specifies the value of the Internship Due-Date';
-                Editable = false;
-            }
-            field(EndInternshipNotificatnSent; Rec.EndInternshipNotificatnSent)
-            {
-                ApplicationArea = All;
-                ToolTip = 'Specifies the value of the End Of Internship Notice Sent.';
-                Editable = false;
+                Visible = (Rec."Employment Type" = Rec."Employment Type"::"Internship");
+                field("Date of Joining the company"; Rec."Date of Joining the company")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the value of the Date of Joining the company.';
+                    Editable = (Rec."Employment Type" = Rec."Employment Type"::"Internship");
+                    ShowMandatory = true;
+                }
+                field("Internship Duration"; Rec."Internship Duration")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the value of the Internship Duration.';
+                    Editable = (Rec."Employment Type" = Rec."Employment Type"::"Internship");
+                    ShowMandatory = true;
+                }
+                field("Internship Due-Date"; Rec."Internship Due-Date")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the value of the Internship Due-Date';
+                    Editable = false;
+                }
+                field(EndInternshipNotificatnSent; Rec.EndInternshipNotificatnSent)
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the value of the End Of Internship Notice Sent.';
+                    Editable = false;
+                }
             }
 
         }
@@ -515,6 +521,39 @@ pageextension 60605 EmployeeCardExt extends "Employee Card"
                 ToolTip = 'Specifies the value of the Business Area field.';
                 ShowMandatory = true;
             }
+        }
+        addafter(Status)
+        {
+            group(Inactive)
+            {
+                ShowCaption = false;
+                Visible = Rec.Status = Rec.Status::Inactive;
+                Editable = Rec.Status = Rec.Status::Inactive;
+            }
+            group(Termination)
+            {
+                ShowCaption = false;
+                Visible = Rec.Status = Rec.Status::Terminated;
+                Editable = Rec.Status = Rec.Status::Terminated;
+            }
+        }
+        movefirst(Inactive;"Inactive Date","Cause of Inactivity Code")
+        movefirst(Termination;"Termination Date","Grounds for Term. Code")
+        modify("Inactive Date")
+        {
+            ShowMandatory = true;
+        }
+        modify("Cause of Inactivity Code")
+        {
+            ShowMandatory = true;
+        }
+        modify("Termination Date")
+        {
+            ShowMandatory = true;
+        }
+        modify("Grounds for Term. Code")
+        {
+            ShowMandatory = true;
         }
         modify("Birth Date")
         {
