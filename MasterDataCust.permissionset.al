@@ -68,5 +68,6 @@ permissionset 60600 MasterDataCust
         page "State/County List"=X,
         tabledata "Employee Job Location"=RIMD,
         table "Employee Job Location"=X,
-        page "Employee Job Location"=X;
+        page "Employee Job Location"=X,
+        codeunit "Transfer Projuction Journal"=X;
 }
