@@ -7,6 +7,15 @@ enum 60600 CustTypeEnum
     value(2; Foreign) { }
     value(3; Retail) { }
 }
+enum 60612 verification
+{
+    Extensible = true;
+
+    value(0; "Open") { }
+    value(1; Pending) { }
+    value(2; Verified) { }
+
+}
 
 enum 60606 CustStatusEnum
 {
@@ -52,8 +61,8 @@ enum 60601 VendorStatusEnum
     Extensible = true;
 
     value(0; " ") { }
-    value(1; Active) { }
-    value(2; Inactive) { }
+    value(1; "Verified") { }
+    value(2; "Not Verified") { }
 }
 
 enum 60604 VendorTypeEnum

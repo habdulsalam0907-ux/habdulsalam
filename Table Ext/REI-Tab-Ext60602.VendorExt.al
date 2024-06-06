@@ -9,7 +9,7 @@ tableextension 60602 VendorExt extends Vendor
             TableRelation = "Vendor Prod/Services Category";
             Caption = 'Product/Service Category';
         }
-        field(60601; "Vendor Status"; Enum VendorStatusEnum)
+        field(60601; "Vendor Status"; Enum CustStatusEnum)
         {
             DataClassification = ToBeClassified;
         }
@@ -61,7 +61,7 @@ tableextension 60602 VendorExt extends Vendor
         field(60613; "Means Of Identification"; Option)
         {
             OptionMembers = Passport,"Driver License","Voter's Card","National ID Card";
-        
+
         }
         field(60614; "Passport ID"; code[50])
         {
@@ -79,7 +79,93 @@ tableextension 60602 VendorExt extends Vendor
         {
             DataClassification = ToBeClassified;
         }
+        field(60618; "Primary Contact Name"; Text[100])
+        {
+            DataClassification = ToBeClassified;
+        }
+        //position, c. email d. phone no
+        field(60619; "Primary Contact Position"; code[100])
+        {
+            DataClassification = ToBeClassified;
+        }
+        field(60620; "Primary Contact"; Text[20])
+        {
+            DataClassification = ToBeClassified;
+            ExtendedDatatype = PhoneNo;
+        }
+        field(60621; "Primary Contact Email"; Text[100])
+        {
+            DataClassification = ToBeClassified;
+            ExtendedDatatype = EMail;
+        }
+        //Operations Contact a. Name b. position c. email d. phone no
+        field(60622; "Operations Contact Email"; Text[100])
+        {
+            DataClassification = ToBeClassified;
+            ExtendedDatatype = EMail;
+        }
+        field(60623; "Operations Contact Phone"; Text[20])
+        {
+            DataClassification = ToBeClassified;
+            ExtendedDatatype = PhoneNo;
+        }
+        field(60624; "Operations Contact Name"; Text[100])
+        {
+            DataClassification = ToBeClassified;
 
+        }
+        field(60625; "RC No."; Text[100])
+        {
+            DataClassification = ToBeClassified;
+
+        }
+        field(60626; "Country of Registration"; enum "Country/Region Address Format")
+        {
+            DataClassification = ToBeClassified;
+
+        }
+        field(60627; "Civil Contractor"; Boolean)
+        {
+            DataClassification = ToBeClassified;
+        }
+        field(60628; "Electrical contractor"; Boolean)
+        {
+            DataClassification = ToBeClassified;
+        }
+        field(60629; "Process/Mechanical"; Boolean)
+        {
+            DataClassification = ToBeClassified;
+        }
+        field(60630; Branding; Boolean)
+        {
+            DataClassification = ToBeClassified;
+        }
+        field(60631; "FX Vendor"; Boolean)
+        {
+            DataClassification = ToBeClassified;
+        }
+        field(60632; "Human Resources"; Boolean)
+        {
+            DataClassification = ToBeClassified;
+        }
+        field(60633; "Legal Services"; Boolean)
+        {
+            DataClassification = ToBeClassified;
+        }
+        field(60634; "Transport/logistics"; Boolean)
+        {
+            DataClassification = ToBeClassified;
+        }
+        field(60640; "Verification Status"; Option)
+        {
+            OptionCaption = 'Open,Pending Approval,Rejected,Verified';
+            OptionMembers = Open,"Pending Approval",Rejected,Verified;
+        }
+        // Regulatory
+        field(60635; "Regulatory"; Boolean)
+        {
+            DataClassification = ToBeClassified;
+        }
         modify("Partner Type")
         {
             Caption = 'Business Type';
@@ -88,11 +174,16 @@ tableextension 60602 VendorExt extends Vendor
         {
             Caption = 'Preferred Bank Account  ';
         }
+
         modify(GLN)
         {
             Caption = 'Vendor TIN';
         }
+
+
     }
+
+
     var
         myInt: Integer;
 }
