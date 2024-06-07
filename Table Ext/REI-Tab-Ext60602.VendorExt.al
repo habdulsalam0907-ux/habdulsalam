@@ -122,6 +122,12 @@ tableextension 60602 VendorExt extends Vendor
         field(60626; "Country of Registration"; enum "Country/Region Address Format")
         {
             DataClassification = ToBeClassified;
+            Editable = false;
+
+        }
+        field(60639; "Country of Registrations"; text[100])
+        {
+            TableRelation = "Country/Region";
 
         }
         field(60627; "Civil Contractor"; Boolean)
@@ -161,6 +167,7 @@ tableextension 60602 VendorExt extends Vendor
             OptionCaption = 'Open,Pending Approval,Rejected,Verified';
             OptionMembers = Open,"Pending Approval",Rejected,Verified;
         }
+
         // Regulatory
         field(60635; "Regulatory"; Boolean)
         {

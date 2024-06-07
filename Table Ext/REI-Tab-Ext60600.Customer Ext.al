@@ -37,6 +37,10 @@ tableextension 60600 CustomerEx extends Customer
         {
             DataClassification = ToBeClassified;
         }
+        field(50099; "Lubricant Customer"; Boolean)
+        {
+            DataClassification = ToBeClassified;
+        }
         field(50010; "Credit Customer"; Boolean)
         {
             DataClassification = ToBeClassified;
@@ -103,9 +107,19 @@ tableextension 60600 CustomerEx extends Customer
             DataClassification = ToBeClassified;
 
         }
+        field(60627; "TIN."; Text[100])
+        {
+            DataClassification = ToBeClassified;
+
+        }
         field(60626; "Country of Registration"; enum "Country/Region Address Format")
         {
             DataClassification = ToBeClassified;
+
+        }
+        field(60639; "Country of Registrations"; text[100])
+        {
+            TableRelation = "Country/Region";
 
         }
     }

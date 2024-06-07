@@ -10,7 +10,22 @@ pageextension 60603 VendorCardExt extends "Vendor Card"
         {
             Caption = 'Website Url';
         }
+        addlast(General)
+        {
+            field("Country of Registrations"; Rec."Country of Registrations")
+            {
+                ApplicationArea = All;
+                Caption = 'Country of Registrations';
+                ToolTip = 'Specifies the value of the Country of Registrations field.';
+            }
 
+
+            field("RC No."; Rec."RC No.")
+            {
+                ApplicationArea = All;
+                ToolTip = 'Specifies the value of the RC No. field.';
+            }
+        }
         addafter(Blocked)
         {
 
@@ -244,7 +259,7 @@ pageextension 60603 VendorCardExt extends "Vendor Card"
     }
     actions
     {
-        addafter("Ven&dor")
+        addfirst("Ven&dor")
         {
             action(VerifyCustomer)
             {
@@ -258,7 +273,7 @@ pageextension 60603 VendorCardExt extends "Vendor Card"
                 begin
                     if not (Rec."Verification Status" = Rec."Verification Status"::Verified) then begin
                         Rec."Verification Status" := Rec."Verification Status"::Verified;
-                        if confirm('Do you want the system to sent verification mail?', true) then begin
+                        if confirm('Do you want the system to send verification mail?', true) then begin
                             if SendVerificationMessage() then Message('Email has been sent to vendor');
                         end;
                         Rec."Vendor Status" := Rec."Vendor Status"::Active;

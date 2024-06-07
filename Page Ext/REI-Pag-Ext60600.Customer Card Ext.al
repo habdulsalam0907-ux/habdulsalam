@@ -2,6 +2,37 @@ pageextension 60600 MyExtension extends "Customer Card"
 {
     layout
     {
+        movefirst(Payments; "Balance (LCY)")
+        movelast(Payments; "Balance Due (LCY)")
+        movelast(General; GLN)
+        movelast(Payments; "Balance (LCY)2")
+        movelast(Payments; "CustSalesLCY - CustProfit - AdjmtCostLCY")
+        movelast(Payments; "Payments (LCY)")
+        movelast(Payments; BalanceAsVendor)
+        modify("Home Page")
+        {
+            Caption = 'Website Url';
+        }
+        addlast(General)
+        {
+            field("Country of Registrations"; Rec."Country of Registrations")
+            {
+                ApplicationArea = All;
+                Caption = 'Country of Registrations';
+                ToolTip = 'Specifies the value of the Country of Registrations field.';
+            }
+            field("TIN."; Rec."TIN.")
+            {
+                ApplicationArea = All;
+                ToolTip = 'Specifies the value of the TIN. field.';
+            }
+
+            field("RC No."; Rec."RC No.")
+            {
+                ApplicationArea = All;
+                ToolTip = 'Specifies the value of the RC No. field.';
+            }
+        }
         // Add changes to page layout here
         addafter(Blocked)
         {
@@ -115,7 +146,12 @@ pageextension 60600 MyExtension extends "Customer Card"
     }
     actions
     {
-        addafter("&Customer")
+        modify("Request Approval")
+        {
+            Visible = false;
+        }
+
+        addfirst("&Customer")
         {
             action(VerifyCustomer)
             {
@@ -129,7 +165,7 @@ pageextension 60600 MyExtension extends "Customer Card"
                 begin
                     if not (Rec."Verification Status" = Rec."Verification Status"::Verified) then begin
                         Rec."Verification Status" := Rec."Verification Status"::Verified;
-                        if confirm('Do you want the system to sent verification mail?', true) then begin
+                        if confirm('Do you want the system to send verification mail?', true) then begin
                             if SendVerificationMessage() then Message('Email has been sent to Customer');
                         end;
                         Rec."Customer Status" := Rec."Customer Status"::Active;
