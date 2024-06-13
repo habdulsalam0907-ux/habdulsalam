@@ -373,7 +373,7 @@ pageextension 60603 VendorCardExt extends "Vendor Card"
         customSetup: Record "Custom Setup";
         customer: Record customer;
         SentBy: Record "User Setup";
-        Text007: label 'We are pleased to inform you that your onboarding process with Hyde Energy has been successful. A warm welcome from the Hyde team. We look forward to a successful business relationship together.';
+        Text007: label 'We are pleased to inform you that your onboarding process with Hyde Energy Limited is now complete.';
         SystemGenerated: Label 'This is a system generated mail.';
     begin
 
@@ -386,7 +386,7 @@ pageextension 60603 VendorCardExt extends "Vendor Card"
         Recipient1.Add(Rec."E-Mail");
 
 
-        Subject := STRSUBSTNO('Congratulations! Your onboarding process has been verified');
+        Subject := STRSUBSTNO('Onboarding Successful');
 
         EmailBody := STRSUBSTNO(Text007);
         if Recipient1.Count > 0 then begin
@@ -397,7 +397,7 @@ pageextension 60603 VendorCardExt extends "Vendor Card"
             EmailMessage.AppendToBody('<br><br>');
             EmailMessage.AppendToBody(FORMAT(EmailBody));
             EmailMessage.AppendToBody('<br><br>');
-            EmailMessage.AppendToBody(hyperlinkText);
+            EmailMessage.AppendToBody('<p>We look forward to a successful business relationship together.</p>');
             EmailMessage.AppendToBody('<br><br>');
             EmailMessage.AppendToBody('Kind Regards,');
             EmailMessage.AppendToBody('<br><br>');
