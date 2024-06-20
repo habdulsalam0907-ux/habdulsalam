@@ -230,7 +230,7 @@ pageextension 60600 MyExtension extends "Customer Card"
         hyperlinkText: Text;
         Link: Text;
         GLSetup: Record "General Ledger Setup";
-        CurrCode: Code[10];
+        CurrCode: Code[50];
         SenderEmail: Text;
         SenderName: Text;
         Recipient1: List of [Text];
