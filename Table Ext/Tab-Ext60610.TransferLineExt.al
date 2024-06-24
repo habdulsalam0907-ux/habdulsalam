@@ -2,6 +2,7 @@ tableextension 60610 "Transfer Line Ext" extends "Transfer Line"
 {
     fields
     {
+
         field(60600; "Shortcut Dimension 3 Code"; Code[30])
         {
             Caption = 'Shortcut Dimension 3 Code';
@@ -72,6 +73,16 @@ tableextension 60610 "Transfer Line Ext" extends "Transfer Line"
             trigger OnValidate()
             begin
                 ValidateShortcutDimCode(8, "Shortcut Dimension 8 Code");
+            end;
+        }
+        field(60606; "Requested Quantity"; Decimal)
+        {
+            DataClassification = ToBeClassified;
+            trigger OnValidate()
+            begin
+                if "Requested Quantity" <> 0 then begin
+                    Quantity := "Requested Quantity";
+                end
             end;
         }
     }

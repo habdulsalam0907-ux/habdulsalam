@@ -26,5 +26,15 @@ tableextension 60611 TransferShipmentLineExt extends "Transfer Shipment Line"
         {
             Caption = 'Shortcut Dimension 8 Code';
         }
+        field(60606; "Requested Quantity"; Decimal)
+        {
+            DataClassification = ToBeClassified;
+            trigger OnValidate()
+            begin
+                if "Requested Quantity" <> 0 then begin
+                    Quantity := "Requested Quantity";
+                end
+            end;
+        }
     }
 }
