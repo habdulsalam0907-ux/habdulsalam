@@ -5,60 +5,60 @@
 //         // Add changes to page layout here
 //     }
 
-    // actions
-    // {
-    //     // Add changes to page actions here
-    //     addafter("Order &Tracking")
-    //     {
-    //         action(CreateTransferOrder)
-    //         {
-    //             ApplicationArea = Manufacturing;
-    //             Caption = 'Scan & Transfer Component To Transfer Order';
-    //             Image = Create;
-    //             trigger OnAction()
-    //             var
-    //                 component: Record "Prod. Order Component";
-    //                 checkAvailability: Page "Check Component Availability";
-    //                 storeNotAvailableItem: JsonObject;
-    //                 fromLocation: code[20];
-    //                 ToLocation: code[20];
-    //                 specialCase: list of [text];
-    //                 specialCaseQuantity: list of [Decimal];
-    //                 itemLedger, itemLedger2 : record "Item Ledger Entry";
-    //                 RequiredQuantity, RemainingQuantity : Decimal;
-    //                 listofitemToTransfer: JsonArray;
-    //                 count: Integer;
-    //                 JsonTokken, JsonTokken2 : JsonToken;
-    //                 TransferOrder: Record "Transfer Header";
-    //                 TransferLine: Record "Transfer Line";
-    //                 lineNo: Integer;
-    //                 itemcode: Code[20];
-    //                 transferOrderQuantity: Decimal;
-    //                 finishedInserting: Boolean;
-    //                 inventorySetup: Record "Inventory Setup";
-    //                 noSeriesMgt: Codeunit "No. Series";
-    //                 Subject: Text;
-    //                 EmailBody: Text;
-    //                 Email: Codeunit Email;
-    //                 EmailMessage: Codeunit "Email Message";
-    //                 hyperlinkText: Text;
-    //                 Link: Text;
-    //                 GLSetup: Record "General Ledger Setup";
-    //                 CurrCode: Code[10];
-    //                 SenderEmail: Text;
-    //                 SenderName: Text;
-    //                 Recipient1: List of [Text];
-    //                 RecipientMail, TableData : Text;
-    //                 RecipientName: Text;
-    //                 usersetup: Record "User Setup";
-    //                 Custome: Record "Custom Setup";
-    //                 SimulatedHeader: Record "Production Order";
-    //                 SimulationNotification: Notification;
-    //                 SubjectTxt: Label 'Purchase Requisition needed for production Item %1';
-    //                 Text008: Label 'Production Supervisor Request that you get the  following Item for the production of %1. ';
-    //                 SystemGenerated: Label 'This is a system generated mail.';
-                // PurchRequisitionHeader: Record "REI-Purch. Requisition";
-                // PurchRequisitionLine: Record "REI-Purch. Requisition Line";
+// actions
+// {
+//     // Add changes to page actions here
+//     addafter("Order &Tracking")
+//     {
+//         action(CreateTransferOrder)
+//         {
+//             ApplicationArea = Manufacturing;
+//             Caption = 'Scan & Transfer Component To Transfer Order';
+//             Image = Create;
+//             trigger OnAction()
+//             var
+//                 component: Record "Prod. Order Component";
+//                 checkAvailability: Page "Check Component Availability";
+//                 storeNotAvailableItem: JsonObject;
+//                 fromLocation: code[20];
+//                 ToLocation: code[20];
+//                 specialCase: list of [text];
+//                 specialCaseQuantity: list of [Decimal];
+//                 itemLedger, itemLedger2 : record "Item Ledger Entry";
+//                 RequiredQuantity, RemainingQuantity : Decimal;
+//                 listofitemToTransfer: JsonArray;
+//                 count: Integer;
+//                 JsonTokken, JsonTokken2 : JsonToken;
+//                 TransferOrder: Record "Transfer Header";
+//                 TransferLine: Record "Transfer Line";
+//                 lineNo: Integer;
+//                 itemcode: Code[20];
+//                 transferOrderQuantity: Decimal;
+//                 finishedInserting: Boolean;
+//                 inventorySetup: Record "Inventory Setup";
+//                 noSeriesMgt: Codeunit "No. Series";
+//                 Subject: Text;
+//                 EmailBody: Text;
+//                 Email: Codeunit Email;
+//                 EmailMessage: Codeunit "Email Message";
+//                 hyperlinkText: Text;
+//                 Link: Text;
+//                 GLSetup: Record "General Ledger Setup";
+//                 CurrCode: Code[50];
+//                 SenderEmail: Text;
+//                 SenderName: Text;
+//                 Recipient1: List of [Text];
+//                 RecipientMail, TableData : Text;
+//                 RecipientName: Text;
+//                 usersetup: Record "User Setup";
+//                 Custome: Record "Custom Setup";
+//                 SimulatedHeader: Record "Production Order";
+//                 SimulationNotification: Notification;
+//                 SubjectTxt: Label 'Purchase Requisition needed for production Item %1';
+//                 Text008: Label 'Production Supervisor Request that you get the  following Item for the production of %1. ';
+//                 SystemGenerated: Label 'This is a system generated mail.';
+// PurchRequisitionHeader: Record "REI-Purch. Requisition";
+// PurchRequisitionLine: Record "REI-Purch. Requisition Line";
 //     actions
 //     {
 //         // Add changes to page actions here
@@ -98,7 +98,7 @@
 //                     hyperlinkText: Text;
 //                     Link: Text;
 //                     GLSetup: Record "General Ledger Setup";
-//                     CurrCode: Code[10];
+//                     CurrCode: Code[50];
 //                     SenderEmail: Text;
 //                     SenderName: Text;
 //                     Recipient1: List of [Text];
