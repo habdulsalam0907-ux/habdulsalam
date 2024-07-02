@@ -299,6 +299,8 @@ pageextension 60603 VendorCardExt extends "Vendor Card"
 
                 end;
             }
+
+
         }
     }
 
@@ -346,7 +348,7 @@ pageextension 60603 VendorCardExt extends "Vendor Card"
     trigger OnClosePage()
     begin
         if Rec."E-Mail" = '' then
-            Error('The vendor email address field must not be filled!');
+            Error('Vendor Email is Required!');
     end;
 
     var

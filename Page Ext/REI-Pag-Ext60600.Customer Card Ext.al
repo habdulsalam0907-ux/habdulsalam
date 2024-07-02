@@ -201,6 +201,7 @@ pageextension 60600 MyExtension extends "Customer Card"
         Notification: Notification;
         NotificationScope: NotificationScope;
     begin
+        // ChangeCompany()
         if not (Rec."Verification Status" in [Rec."Verification Status"::Rejected, Rec."Verification Status"::Verified]) then begin
             Notification.Message('Customer Account is yet to be verified or Rejected');
         end
@@ -208,8 +209,10 @@ pageextension 60600 MyExtension extends "Customer Card"
 
     trigger OnClosePage()
     begin
+
         if Rec."E-Mail" = '' then
-            Error('The customer email address field must not be emptied!');
+            Error('Customer Email is Required!');
+
     end;
 
     var
