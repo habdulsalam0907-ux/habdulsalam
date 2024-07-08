@@ -69,5 +69,14 @@ permissionset 60600 MasterDataCust
         tabledata "Employee Job Location"=RIMD,
         table "Employee Job Location"=X,
         page "Employee Job Location"=X,
-        codeunit "Transfer Projuction Journal"=X;
+        codeunit "Transfer Projuction Journal"=X,
+        tabledata "Company Setup"=RIMD,
+        tabledata "Consolidated Employee"=RIMD,
+        table "Company Setup"=X,
+        table "Consolidated Employee"=X,
+        report "Fixed Asset Reg"=X,
+        codeunit "Emp Consolidation Events"=X,
+        page "Consolidated Companies"=X,
+        page "Consolidated Emp Card"=X,
+        page "Consolidated Employee List"=X;
 }

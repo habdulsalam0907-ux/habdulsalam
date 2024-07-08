@@ -3,7 +3,7 @@ report 60603 "Fixed Asset Reg"
     UsageCategory = ReportsAndAnalysis;
     ApplicationArea = All;
     DefaultRenderingLayout = DepreciationRegister;
-    Caption = 'Fixed Asset Depreciation Register';
+    Caption = 'Custom Fixed Asset Register';
 
     dataset
     {
@@ -30,7 +30,14 @@ report 60603 "Fixed Asset Reg"
             {
             }
 
+            column(FapostingGroupName; FapostingGroupName)
+            {
 
+            }
+            column(FaLocationName; FaLocationName)
+            {
+
+            }
 
             column(Description_FixedAsset; Description)
             {
@@ -55,12 +62,8 @@ report 60603 "Fixed Asset Reg"
             column(GlobalDimension2Code_FixedAsset; "Global Dimension 2 Code")
             {
             }
-            column(Location_FixedAsset; Location)
-            {
-            }
-            column(LocationCode_FixedAsset; "Location Code")
-            {
-            }
+
+
 
 
             column(No_FixedAsset; "No.")
@@ -130,43 +133,67 @@ report 60603 "Fixed Asset Reg"
             trigger OnAfterGetRecord()
             var
                 Fadepbook: Record "FA Depreciation Book";
-                FaLedger, FaLeger1 : Record "FA Ledger Entry";
+                FaLedger, FaLeger1, FaLedger2 : Record "FA Ledger Entry";
+                FixedAst: Record "Fixed Asset";
 
                 FadepStartDate, FadepEndDate : Date;
                 NumOfYears: Integer;
+                CurrentMonth: Text[30];
+                LastYear: Text[30];
+                Expr3: Text[30];
+                RefDate: Date;
+                CM: Date;
+                LY: Date;
             begin
+                //   FapostingGroupName
+                if FapostingTable.get(FixedAsset."FA Posting Group") then begin
+                    FapostingGroupName := FapostingTable.Description;
+                end;
+                if FaLocationCodeRec.Get(FixedAsset."FA Location Code") then begin
+                    FaLocationName := FaLocationCodeRec.Name;
+                end;
 
                 Fadepbook.Reset();
+
                 Fadepbook.SetRange("FA No.", FixedAsset."No.");
                 if Fadepbook.FindFirst() then begin
+                    if Fadepbook."Disposal Date" > 0D then
+                        Fadepbook."Book Value" := 0
+                    else
+                        Fadepbook.CalcFields("Book Value");
+
+                    bookValue := Fadepbook."Book Value";
+                    FaLedger.Reset();
+                    FaLedger.SetCurrentKey("FA No.", "Depreciation Book Code", "Part of Book Value", "FA Posting Date");
                     FaLedger.SetRange("FA No.", FixedAsset."No.");
                     FaLedger.SetRange("Depreciation Book Code", Fadepbook."Depreciation Book Code");
-                    // FadepStartDate := Fadepbook."Depreciation Starting Date";
-                    // FadepEndDate := Fadepbook."Depreciation Ending Date";
-                    // NumOfYears := Fadepbook."No. of Depreciation Years";
-
-
+                    FaLedger2.Copy(FaLedger);
+                    FaLeger1.Copy(FaLedger);
 
                     if FaLedger.FindSet() then begin
 
                         FaLedger.SetRange("FA Posting Type", FaLedger."FA Posting Type"::"Acquisition Cost");
-                        FaLedger.SetRange("Document Type", FaLedger."Document Type"::Invoice);
-
+                        FaLedger.SetFilter("Document Type", '%1|%2', FaLedger."Document Type"::Invoice, FaLedger."Document Type"::" ");
+                        //Get the acquiciation amount
                         if FaLedger.FindFirst() then begin
-                            // FaLedger.CalcFields(Amount);
                             PurchaseDate := FaLedger."Posting Date";
                             PurchasePrice := FaLedger.Amount;
                         end;
-                        FaLedger.SetFilter("FA Posting Type", '%1 | %2', FaLedger."FA Posting Type"::Appreciation, FaLedger."FA Posting Type"::"Write-Down");
-                        FaLedger.SetRange("Document Type", FaLedger."Document Type"::" ");
-                        if FaLedger.FindLast() then begin
-                            // FaLedger.CalcFields(Amount);
-                            RevaluedAmount := FaLedger.Amount;
+
+                        FaLedger2.SetFilter("FA Posting Type", '%1 | %2', FaLedger2."FA Posting Type"::Appreciation, FaLedger2."FA Posting Type"::"Write-Down");
+                        FaLedger2.SetFilter("Document Type", '%1|%2', FaLedger2."Document Type"::" ", FaLedger2."Document Type"::Invoice);
+
+                        if FaLedger2.FindLast() then begin
+                            RevaluedAmount := FaLedger2.Amount;
+                        end else begin
+                            RevaluedAmount := PurchasePrice;
                         end;
 
-                        FaLeger1.SetRange("FA Posting Category", FaLedger."FA Posting Category"::" ");
+                        FaLeger1.SetRange("FA Posting Category", FaLeger1."FA Posting Category"::" ");
                         FaLeger1.SetRange("Depreciation Book Code", Fadepbook."Depreciation Book Code");
                         FaLeger1.SetRange("FA Posting Type", FaLeger1."FA Posting Type"::Depreciation);
+                        // FaLeger1.SetRange("FA Posting Date", FixedAsset."FA Posting Date Filter");
+
                         if FaLeger1.FindLast() then begin
                             // FaLeger1.CalcFields(Amount);
                             CurrentPeriodDepreciationAmount := FaLeger1.Amount;
@@ -178,7 +205,7 @@ report 60603 "Fixed Asset Reg"
                                 PriorYearDepAmount += FaLeger1.Amount;
                             until FaLeger1.Next() = 0;
                         end;
-                        FaLeger1.SetRange("FA Posting Date", FixedAsset."FA Posting Date Filter");
+
                         if FaLeger1.FindSet() then begin
                             repeat
                                 // FaLeger1.CalcFields(Amount);
@@ -189,17 +216,17 @@ report 60603 "Fixed Asset Reg"
 
                         TotalCumDepreciation += CurrentYearDeprAmount + CurrentPeriodDepreciationAmount;
 
-                        FaLeger1.Reset();
-                        FaLeger1.SetCurrentKey("FA No.", "Depreciation Book Code", "Part of Book Value", "FA Posting Date");
-                        FaLeger1.SetRange("FA No.", FixedAsset."No.");
-                        FaLeger1.SetRange("Depreciation Book Code", Fadepbook."Depreciation Book Code");
-                        FaLeger1.SetRange("Part of Book Value", true);
-                        if FaLeger1.FindSet() then begin
-                            // FaLeger1.CalcFields(Amount);
-                            repeat
-                                bookValue += FaLeger1.Amount;
-                            until FaLeger1.Next() = 0;
-                        end
+                        // FaLeger1.Reset();
+                        // // FaLeger1.SetCurrentKey("FA No.", "Depreciation Book Code", "Part of Book Value", "FA Posting Date");
+                        // FaLeger1.SetRange("FA No.", FixedAsset."No.");
+                        // FaLeger1.SetRange("Depreciation Book Code", Fadepbook."Depreciation Book Code");
+                        // FaLeger1.SetRange("Part of Book Value", true);
+                        // if FaLeger1.FindSet() then begin
+                        //     // FaLeger1.CalcFields(Amount);
+                        //     repeat
+                        //         bookValue += FaLeger1.Amount;
+                        //     until FaLeger1.Next() = 0;
+                        // end
 
                     end
 
@@ -244,6 +271,10 @@ report 60603 "Fixed Asset Reg"
     var
         PurchasePrice, RevaluedAmount, TotalCumDepreciation, bookValue, CurrentPeriodDepreciationAmount, CurrentYearDeprAmount, PriorYearDepAmount : Decimal;
         PurchaseDate: Date;
+        FapostingGroupName: Text;
+        FapostingTable: Record "FA Posting Group";
+        FaLocationName: Text;
+        FaLocationCodeRec: Record "FA Location";
 
 
 }
