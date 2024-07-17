@@ -20,10 +20,9 @@ table 60620 "Company Setup"
                 if CompanyRec.Get(Name) then begin
                     "Display Name" := CompanyRec."Display Name";
                 end
-
             end;
         }
-        field(3; "Display Name"; Text[250])
+        field(3; "Display Name"; Text[1000])
         {
             Caption = 'Display Name';
             Editable = false;

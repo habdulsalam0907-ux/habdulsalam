@@ -53,7 +53,7 @@ codeunit 60603 "Emp Consolidation Events"
         end;
     end;
 
-    procedure getCompanyDisplayName(Var CompanyName: text[50]): Text[250]
+    procedure getCompanyDisplayName(Var CompanyName: text[50]): Text[1000]
     var
         company: Record company;
     begin

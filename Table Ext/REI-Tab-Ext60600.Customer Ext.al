@@ -1,5 +1,7 @@
 tableextension 60600 CustomerEx extends Customer
 {
+
+
     fields
     {
         // Add changes to table fields here
@@ -126,6 +128,13 @@ tableextension 60600 CustomerEx extends Customer
 
     var
         myInt: Integer;
+
+        local procedure MyProcedure()
+        var
+            myInt: Integer;
+        begin
+          
+        end;
 }
 
 

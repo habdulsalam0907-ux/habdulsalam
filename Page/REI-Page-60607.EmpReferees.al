@@ -75,7 +75,7 @@ page 60607 "Employee Referees/Guarantors"
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Telephone No field.';
                 }
-                
+
             }
         }
     }
@@ -123,13 +123,13 @@ page 60607 "Employee Referees/Guarantors"
         EmailMessage: Codeunit "Email Message";
         EmailSend: Codeunit "Email";
         EmailAccount: Record "Email Account";
-        TempBlob, TempBlob1: Codeunit "Temp Blob";
-        outStreamReport, outStreamReport1: OutStream;
-        inStreamReport, inStreamReport1: InStream;
-        ReportToSend, ReportToSend1: Integer;
+        TempBlob, TempBlob1 : Codeunit "Temp Blob";
+        outStreamReport, outStreamReport1 : OutStream;
+        inStreamReport, inStreamReport1 : InStream;
+        ReportToSend, ReportToSend1 : Integer;
         XMLParameter, Subject, EmailBody : Text;
         RecRef: RecordRef;
-        FileName, FileName1: Text[250];
+        FileName, FileName1 : Text[1000];
         ReportAsPdfFileNameMsg: Label 'EMPLOYEE REFERENCE CONFIRMATION FORM.pdf';
         ReportAsPdfFileNameMsg1: Label 'NON-EMPLOYEE REFERENCE FORM.pdf';
         HRsetup: Record "REI-HR Setup";
@@ -154,16 +154,16 @@ page 60607 "Employee Referees/Guarantors"
 
 
         Subject := STRSUBSTNO('EMPLOYEE REFERENCE CONFIRMATION - %1', Employee.FullName());
- 
+
         Rec.TestField("Submission Deadline");
         Rec.TestField("E-Mail");
 
-        EmailBody := StrSubstNo('Warm greetings from %1!',CompanyName);
+        EmailBody := StrSubstNo('Warm greetings from %1!', CompanyName);
         EmailBody += StrSubstNo('<br><br><b>%1</b> is currently in the employment of %2 as %3, and he has nominated you as one of his referees.',
-                            Employee.FullName(),CompanyName,Employee."Job Title");
+                            Employee.FullName(), CompanyName, Employee."Job Title");
         EmailBody += '<br><br>We would appreciate if you could complete one of the two forms (Employee Reference form if you are his ex-employer or Non-Employee form if otherwise).';
-        EmailBody +=  StrSubstNo('<br>Kindly send a signed soft/hard copy of the applicable form to the undersigned on or before the close of business on %1.',
-                                FORMAT(Rec."Submission Deadline",0,'<Weekday Text>, <Month Text> <Day>, <Year4>'));
+        EmailBody += StrSubstNo('<br>Kindly send a signed soft/hard copy of the applicable form to the undersigned on or before the close of business on %1.',
+                                FORMAT(Rec."Submission Deadline", 0, '<Weekday Text>, <Month Text> <Day>, <Year4>'));
         EmailBody += '<br><br>We assure you that your response will be treated with strict confidentiality and no financial responsibility whatever is incurred by filling up and signing the form.';
         EmailBody += '<br><br>Many thanks for your cooperation.';
 
@@ -180,7 +180,7 @@ page 60607 "Employee Referees/Guarantors"
         EmailMessage.AppendToBody(FORMAT(STRSUBSTNO('%1 <BR>', COMPANYNAME)));
         EmailMessage.AppendToBody('<HR>');
         // IF EmailSend.Send(EmailMessage, Enum::"Email Scenario"::"HR Communication") THEN;
-        IF EmailSend.OpenInEditorModallyWithScenario(EmailMessage, EmailAccount,Enum::"Email Scenario"::"HR Communication") = Enum::"Email Action"::Sent then begin
+        IF EmailSend.OpenInEditorModallyWithScenario(EmailMessage, EmailAccount, Enum::"Email Scenario"::"HR Communication") = Enum::"Email Action"::Sent then begin
             MESSAGE('Employee Reference Confirmation is Successfully sent!!!');
         end else begin
             MESSAGE('No Mail was sent!!!');

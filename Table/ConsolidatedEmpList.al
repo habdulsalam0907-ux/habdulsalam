@@ -6,6 +6,10 @@ table 60619 "Consolidated Employee"
     Scope = Cloud;
     ReplicateData = true;
     DataCaptionFields = "No.", "First Name", "Middle Name", "Last Name";
+
+
+
+
     // DrillDownPageID = "Employee List";
     // LookupPageID = "Employee List";
     fields
@@ -48,18 +52,18 @@ table 60619 "Consolidated Employee"
             Caption = 'Job Title';
             Editable = false;
         }
-        field(7; "Search Name"; Code[250])
+        field(7; "Search Name"; Code[1000])
         {
             Caption = 'Search Name';
             Editable = false;
 
         }
-        field(8; "Company Display Name"; Text[250])
+        field(8; "Company Display Name"; Text[1000])
         {
             Caption = 'Display Name';
             Editable = false;
         }
-        field(9; "Email"; Code[250])
+        field(9; "Email"; Code[1000])
         {
             Caption = 'Email';
             ExtendedDatatype = EMail;

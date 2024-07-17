@@ -162,7 +162,7 @@ tableextension 60603 EmployeeTabExt extends Employee
             Caption = 'Employee Group';
             DataClassification = ToBeClassified;
         }
-        field(50021; Designation; Text[250])
+        field(50021; Designation; Text[1000])
         {
             Caption = 'Designation';
             DataClassification = ToBeClassified;
@@ -864,13 +864,13 @@ tableextension 60603 EmployeeTabExt extends Employee
         HRSetup: Record "REI-HR Setup";
     begin
         If "Retirement Age" <> 0 then begin
-            "Retirement Birth Date" := CalcDate(StrSubstNo('<%1M>',"Retirement Age"), "Birth Date");
+            "Retirement Birth Date" := CalcDate(StrSubstNo('<%1M>', "Retirement Age"), "Birth Date");
             Modify();
         end else begin
             HRSetup.Get();
             HRSetup.TestField("Retirement Age");
             "Retirement Age" := HRSetup."Retirement Age";
-            "Retirement Birth Date" := CalcDate(StrSubstNo('<%1M>',"Retirement Age"), "Birth Date");
+            "Retirement Birth Date" := CalcDate(StrSubstNo('<%1M>', "Retirement Age"), "Birth Date");
             Modify();
         end;
     end;
