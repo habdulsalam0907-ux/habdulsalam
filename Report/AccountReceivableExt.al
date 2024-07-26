@@ -7,7 +7,6 @@ reportextension 60600 "ÄR Ext" extends "Aged Accounts Receivable"
         modify("Cust. Ledger Entry")
         {
 
-
             trigger OnAfterAfterGetRecord()
             begin
                 // "Cust. Ledger Entry".SetRange("Customer Posting Group");
@@ -16,8 +15,6 @@ reportextension 60600 "ÄR Ext" extends "Aged Accounts Receivable"
         add(Customer)
         {
             column(Customer_Posting_Group; "Customer Posting Group") { }
-
-
         }
         modify(Customer)
         {

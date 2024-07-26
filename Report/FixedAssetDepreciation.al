@@ -115,13 +115,8 @@ report 60603 "Fixed Asset Reg"
                 if showOnlyAcquired then begin
                     FixedAsset.SetRange(Acquired, true);
                 end
-
-                // if DateFilter = 0D then Error('You need to enter a period');
             end;
-
-
             //PurchasePrice, RevaluedAmount, TotalCumDepreciation, bookValue, CurrentPeriodDepreciationAmount, CurrentYearDeprAmount, PriorYearDepAmount
-
             trigger OnAfterGetRecord()
             var
                 Fadepbook: Record "FA Depreciation Book";
@@ -137,13 +132,13 @@ report 60603 "Fixed Asset Reg"
                 Day: Integer;
             begin
 
-                Clear(FapostingGroupName);
-                Clear(FaLocationName);
-                Clear(PriorYearDepAmount);
-                Clear(bookValue);
-                Clear(RevaluedAmount);
-                Clear(TotalCumDepreciation);
-                Clear(CurrentPeriodDepreciationAmount);
+                // Clear(FapostingGroupName);
+                // Clear(FaLocationName);
+                // Clear(PriorYearDepAmount);
+                // Clear(bookValue);
+                // Clear(RevaluedAmount);
+                // Clear(TotalCumDepreciation);
+                // Clear(CurrentPeriodDepreciationAmount);
 
                 //   FapostingGroupName
                 if FapostingTable.get(FixedAsset."FA Posting Group") then begin
@@ -159,6 +154,7 @@ report 60603 "Fixed Asset Reg"
                 //                                               "FA Posting Date" = field("FA Posting Date Filter")));
                 Fadepbook.Reset();
                 Fadepbook.SetRange("FA No.", FixedAsset."No.");
+                Fadepbook.SetRange("FA Posting Date Filter", DateFilter);
                 // getting the book value here 
                 if Fadepbook.FindFirst() then begin
                     Fadepbook.CalcFields("Book Value");
