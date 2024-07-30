@@ -35,6 +35,7 @@ report 60603 "Fixed Asset Reg"
             column(PriorYearDepAmount; PriorYearDepAmount) { }
             column(bookValue; bookValue) { }
             column(PurchaseDate; PurchaseDate) { }
+            column(DateFilter; DateFilter) { }
             dataitem(FADepreciationBook; "FA Depreciation Book")
             {
                 DataItemLink = "FA No." = field("No.");
@@ -58,12 +59,15 @@ report 60603 "Fixed Asset Reg"
                 var
                     FaLedger2, FaLeger1, FaLedger, FaLedger3 : Record "FA Ledger Entry";
                 begin
+
+
                     FaLedger2.Reset();
                     FaLedger2.SetCurrentKey("FA No.", "Depreciation Book Code", "Part of Book Value", "FA Posting Date");
                     FaLedger2.SetRange("FA No.", FixedAsset."No.");
                     FaLedger2.SetRange("Depreciation Book Code", FADepreciationBook."Depreciation Book Code");
                     FaLedger2.SetFilter("FA Posting Type", '%1 | %2', FaLedger2."FA Posting Type"::Appreciation, FaLedger2."FA Posting Type"::"Write-Down");
                     FaLedger2.SetFilter("FA Posting Date", '..%1', DateFilter);
+                    RevaluedAmount := 0;
                     if FaLedger2.FindSet() then begin
                         repeat
                             RevaluedAmount += FaLedger2.Amount;
@@ -82,7 +86,7 @@ report 60603 "Fixed Asset Reg"
                     FaLeger1.SetRange("Depreciation Book Code", FADepreciationBook."Depreciation Book Code");
                     FaLeger1.SetFilter("FA Posting Type", '%1', FaLeger1."FA Posting Type"::Depreciation);
                     FaLeger1.SetFilter("Posting Date", '..%1', getBeginingYearDate(DateFilter));
-
+                    PriorYearDepAmount := 0;
                     if FaLeger1.FindSet() then begin
                         repeat
                             PriorYearDepAmount += FaLeger1.Amount;
@@ -95,6 +99,8 @@ report 60603 "Fixed Asset Reg"
                     FaLedger.SetRange("Depreciation Book Code", FADepreciationBook."Depreciation Book Code");
                     FaLedger.SetFilter("Posting Date", '%1..%2', getBeginingYearDate(DateFilter), DateFilter);
                     FaLedger.SetFilter("FA Posting Type", '%1', FaLedger."FA Posting Type"::Depreciation);
+                    CurrentYearDeprAmount := 0;
+                    CurrentPeriodDepreciationAmount := 0;
                     if FaLedger.FindLast() then begin
                         CurrentPeriodDepreciationAmount := FaLedger.Amount;
                     end;
@@ -132,14 +138,9 @@ report 60603 "Fixed Asset Reg"
                 Day: Integer;
             begin
 
-                // Clear(FapostingGroupName);
-                // Clear(FaLocationName);
-                // Clear(PriorYearDepAmount);
-                // Clear(bookValue);
-                // Clear(RevaluedAmount);
-                // Clear(TotalCumDepreciation);
-                // Clear(CurrentPeriodDepreciationAmount);
-
+                FapostingGroupName := '';
+                FaLocationName := '';
+                bookValue := 0;
                 //   FapostingGroupName
                 if FapostingTable.get(FixedAsset."FA Posting Group") then begin
                     FapostingGroupName := FapostingTable.Description;
@@ -147,25 +148,16 @@ report 60603 "Fixed Asset Reg"
                 if FaLocationCodeRec.Get(FixedAsset."FA Location Code") then begin
                     FaLocationName := FaLocationCodeRec.Name;
                 end;
-                // sum("FA Ledger Entry".Amount where("FA No." = field("FA No."),
-                //                                          "Depreciation Book Code" = field("Depreciation Book Code"),
-                //                                            "FA Posting Category" = const(" "),
-                //                                             "FA Posting Type" = const(Depreciation),
-                //                                               "FA Posting Date" = field("FA Posting Date Filter")));
+
                 Fadepbook.Reset();
                 Fadepbook.SetRange("FA No.", FixedAsset."No.");
-                Fadepbook.SetRange("FA Posting Date Filter", DateFilter);
                 // getting the book value here 
                 if Fadepbook.FindFirst() then begin
                     Fadepbook.CalcFields("Book Value");
-
                     if Fadepbook."Disposal Date" > 0D then
                         bookValue := 0
                     else
                         bookValue := Fadepbook."Book Value";
-
-
-
                 end;
             end;
         }
@@ -193,6 +185,7 @@ report 60603 "Fixed Asset Reg"
                     field(showOnlyAcquired; showOnlyAcquired)
                     {
                         Caption = 'Show Only Acquired Asset';
+                        ApplicationArea = All;
                     }
                 }
             }

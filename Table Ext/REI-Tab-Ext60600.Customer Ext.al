@@ -34,6 +34,7 @@ tableextension 60600 CustomerEx extends Customer
         field(50008; "Customer Business Group"; Text[30])
         {
             DataClassification = ToBeClassified;
+            TableRelation = "Customer Bus Posting Group";
         }
         field(50009; "LPG Customer"; Boolean)
         {
@@ -129,12 +130,12 @@ tableextension 60600 CustomerEx extends Customer
     var
         myInt: Integer;
 
-        local procedure MyProcedure()
-        var
-            myInt: Integer;
-        begin
-          
-        end;
+    local procedure MyProcedure()
+    var
+        myInt: Integer;
+    begin
+
+    end;
 }
 
 

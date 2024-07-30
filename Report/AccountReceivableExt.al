@@ -1,23 +1,51 @@
-reportextension 60600 "ÄR Ext" extends "Aged Accounts Receivable"
+reportextension 60600 "AR Ext" extends "Aged Accounts Receivable"
 {
     dataset
     {
         // Add changes to dataitems and columns here
 
-        modify("Cust. Ledger Entry")
+        modify(OpenCustLedgEntry)
         {
 
             trigger OnAfterAfterGetRecord()
+            var
+                CustLedgerEntry: Record "Cust. Ledger Entry";
             begin
                 // "Cust. Ledger Entry".SetRange("Customer Posting Group");
+                CustLedgerEntry.SetRange("Customer No.", "Cust. Ledger Entry"."Customer No.");
+                CustLedgerEntry.SetRange("Posting Date", OpenCustLedgEntry."Date Filter");
+                if CustLedgerEntry.FindSet() then begin
+                    repeat
+                        current += CustLedgerEntry.Amount;
+                    until CustLedgerEntry.Next() = 0;
+                end
+
             end;
         }
+        add(OpenCustLedgEntry)
+        {
+            column(current; current)
+            {
+
+            }
+            column(TotalCurrent; TotalCurrent)
+            {
+
+            }
+
+        }
+
         add(Customer)
         {
-            column(Customer_Posting_Group; "Customer Posting Group") { }
+            column(Customer_Business_Group; "Customer Business Group")
+            {
+
+            }
+
         }
         modify(Customer)
         {
+
             trigger OnAfterAfterGetRecord()
             begin
                 // Customer.SetRange("Customer Posting Group", cus);
@@ -35,7 +63,11 @@ reportextension 60600 "ÄR Ext" extends "Aged Accounts Receivable"
         layout(LayoutName)
         {
             Type = RDLC;
-            LayoutFile = 'mylayout.rdl';
+            LayoutFile = './Report/AccountReceivable.rdl';
         }
     }
+
+    var
+        current, TotalCurrent : Decimal;
+
 }

@@ -173,6 +173,14 @@ tableextension 60602 VendorExt extends Vendor
         {
             DataClassification = ToBeClassified;
         }
+        field(60636; "Vendor Business Posting Grp."; Code[20])
+        {
+            DataClassification = ToBeClassified;
+            TableRelation = "Vendor Bus Posting Group";
+        }
+
+
+
         modify("Partner Type")
         {
             Caption = 'Business Type';

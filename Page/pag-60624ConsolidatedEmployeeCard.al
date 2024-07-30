@@ -3,6 +3,7 @@ page 60624 "Consolidated Emp Card"
     Caption = 'Employee Card';
     PageType = Card;
     SourceTable = "Consolidated Employee";
+    ApplicationArea = All;
 
     layout
     {
