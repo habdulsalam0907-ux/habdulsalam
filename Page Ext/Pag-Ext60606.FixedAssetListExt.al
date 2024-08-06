@@ -14,4 +14,53 @@ pageextension 60606 FixedAssetListExt extends "Fixed Asset List"
             }
         }
     }
+    actions
+    {
+        addfirst("Fixed &Asset")
+        {
+            // action("Update Vehicle")
+            // {
+            //     ApplicationArea = all;
+            //     Promoted = true;
+            //     Visible = NotClassified;
+            //     trigger OnAction()
+            //     var
+            //         FixedAsset: Record "Fixed Asset";
+            //     begin
+            //         if not FixedAsset.IsEmpty then begin
+            //             FixedAsset.SetRange("Classify As Vehicle", false);
+            //             FixedAsset.SetRange("FA Subclass Code", 'MOTOR_VEH');
+            //             if FixedAsset.FindSet() then begin
+            //                 repeat
+            //                     FixedAsset."Classify As Vehicle" := true;
+            //                     FixedAsset.Modify();
+            //                 until FixedAsset.Next() = 0;
+            //             end
+            //         end
+            //     end;
+            // }
+        }
+    }
+
+    var
+        NotClassified: Boolean;
+
+    trigger OnOpenPage()
+    var
+        FixedAsset: Record "Fixed Asset";
+        FaClasses: Record "FA Class";
+    begin
+        FaClasses.SetRange("Use As Vehicle", true);
+        FaClasses.FindFirst();
+        if not FixedAsset.IsEmpty then begin
+            FixedAsset.SetRange("Classify As Vehicle", false);
+            FixedAsset.SetRange("FA Subclass Code", FaClasses.Code);
+            if FixedAsset.FindSet() then begin
+                repeat
+                    FixedAsset."Classify As Vehicle" := true;
+                    FixedAsset.Modify();
+                until FixedAsset.Next() = 0;
+            end
+        end
+    end;
 }

@@ -1,28 +1,28 @@
-reportextension 60600 "AR Ext" extends "Aged Accounts Receivable"
+reportextension 60607 "AP Ext" extends "Aged Accounts Payable"
 {
     dataset
     {
         // Add changes to dataitems and columns here
 
-        modify(OpenCustLedgEntry)
+        modify("Vendor Ledger Entry")
         {
 
             trigger OnAfterAfterGetRecord()
             var
-                CustLedgerEntry: Record "Cust. Ledger Entry";
+                VendLedgerEntry: Record "Vendor Ledger Entry";
             begin
                 // "Cust. Ledger Entry".SetRange("Customer Posting Group");
-                CustLedgerEntry.SetRange("Customer No.", "Cust. Ledger Entry"."Customer No.");
-                CustLedgerEntry.SetRange("Posting Date", OpenCustLedgEntry."Date Filter");
-                if CustLedgerEntry.FindSet() then begin
+                VendLedgerEntry.SetRange("Vendor No.", "Vendor Ledger Entry"."Vendor No.");
+                VendLedgerEntry.SetRange("Date Filter", "Vendor Ledger Entry"."Date Filter");
+                if VendLedgerEntry.FindSet() then begin
                     repeat
-                        current += CustLedgerEntry.Amount;
-                    until CustLedgerEntry.Next() = 0;
+                        current += VendLedgerEntry.Amount;
+                    until VendLedgerEntry.Next() = 0;
                 end
 
             end;
         }
-        add(OpenCustLedgEntry)
+        add(OpenVendorLedgEntry)
         {
             column(current; current)
             {
@@ -35,15 +35,15 @@ reportextension 60600 "AR Ext" extends "Aged Accounts Receivable"
 
         }
 
-        add(Customer)
+        add(vendor)
         {
-            column(Customer_Business_Group; "Customer Business Group")
+            column(Vendor_Posting_Group; "Vendor Posting Group")
             {
 
             }
 
         }
-        modify(Customer)
+        modify(vendor)
         {
 
             trigger OnAfterAfterGetRecord()
@@ -63,7 +63,7 @@ reportextension 60600 "AR Ext" extends "Aged Accounts Receivable"
         layout(LayoutName)
         {
             Type = RDLC;
-            LayoutFile = './Report/AccountReceivable.rdl';
+            LayoutFile = './Report/AccountPayable.rdl';
         }
     }
 

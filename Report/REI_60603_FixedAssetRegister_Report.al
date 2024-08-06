@@ -48,11 +48,14 @@ report 60603 "Fixed Asset Reg"
                 column(Acquisition_Date; "Acquisition Date") { }
                 column(Depreciation; Depreciation) { }
                 column(Last_Acquisition_Cost_Date; "Last Acquisition Cost Date") { }
+                column(HideZero; HideZero) { }
 
                 trigger OnPreDataItem()
 
                 begin
                     FADepreciationBook.SetFilter("FA Posting Date Filter", '..%1', DateFilter);
+                    FADepreciationBook.CalcFields("Book Value");
+                    // if HideZero then FADepreciationBook.SetFilter("Book Value", '<>%1', 0);
                 end;
 
                 trigger OnAfterGetRecord()
@@ -120,7 +123,9 @@ report 60603 "Fixed Asset Reg"
             begin
                 if showOnlyAcquired then begin
                     FixedAsset.SetRange(Acquired, true);
+
                 end
+
             end;
             //PurchasePrice, RevaluedAmount, TotalCumDepreciation, bookValue, CurrentPeriodDepreciationAmount, CurrentYearDeprAmount, PriorYearDepAmount
             trigger OnAfterGetRecord()
@@ -151,6 +156,7 @@ report 60603 "Fixed Asset Reg"
 
                 Fadepbook.Reset();
                 Fadepbook.SetRange("FA No.", FixedAsset."No.");
+                // if HideZero then Fadepbook.SetFilter("Book Value", '<>%1', 0);
                 // getting the book value here 
                 if Fadepbook.FindFirst() then begin
                     Fadepbook.CalcFields("Book Value");
@@ -187,6 +193,12 @@ report 60603 "Fixed Asset Reg"
                         Caption = 'Show Only Acquired Asset';
                         ApplicationArea = All;
                     }
+                    field(HideZero; HideZero)
+                    {
+                        Caption = 'Hide Zero book Value';
+                        ApplicationArea = All;
+                        Visible = false;
+                    }
                 }
             }
         }
@@ -221,7 +233,7 @@ report 60603 "Fixed Asset Reg"
         FaLocationName: Text;
         FaLocationCodeRec: Record "FA Location";
         DateFilter: Date;
-        showOnlyAcquired: Boolean;
+        showOnlyAcquired, HideZero : Boolean;
 
     procedure getBeginingYearDate(datefilter: Date): Date
     var

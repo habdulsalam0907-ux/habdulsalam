@@ -138,5 +138,32 @@ codeunit 60603 "Emp Consolidation Events"
         deleteConsolidatedEmp(Rec, CompanyName);
     end;
 
+    procedure updateCarClassification(var FixedAsset: Record "Fixed Asset")
+    begin
+        if FixedAsset."Classify As Vehicle" = false then begin
+            FixedAsset."Classify As Vehicle" := true;
+            FixedAsset.Modify();
+        end
+    end;
+
+
+    // update the fixed asset record classification when Fa subclass changes to vehicle
+
+    [EventSubscriber(ObjectType::Table, Database::"Fixed Asset", 'OnAfterModifyEvent', '', false, false)]
+    local procedure OnAfterModifyEventFixedAssetRecord(var Rec: Record "Fixed Asset"; var xRec: Record "Fixed Asset")
+    var
+        FaClasses: Record "FA Class";
+    begin
+        FaClasses.SetRange("Use As Vehicle", true);
+        FaClasses.FindFirst();
+        if xRec."FA Subclass Code" <> Rec."FA Subclass Code" then begin
+            if (Rec."FA Subclass Code" = FaClasses.Code) then begin
+                updateCarClassification(Rec)
+            end
+        end else if (Rec."FA Subclass Code" = FaClasses.Code) then begin
+            updateCarClassification(Rec)
+        end
+
+    end;
 }
 

@@ -5915,6 +5915,9 @@ End Function
         <Field Name="Last_Acquisition_Cost_Date">
           <DataField>Last_Acquisition_Cost_Date</DataField>
         </Field>
+        <Field Name="HideZero">
+          <DataField>HideZero</DataField>
+        </Field>
       </Fields>
       <Query>
         <DataSourceName>DataSource</DataSourceName>
