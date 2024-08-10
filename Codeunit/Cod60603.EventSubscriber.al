@@ -152,18 +152,19 @@ codeunit 60603 "Emp Consolidation Events"
     [EventSubscriber(ObjectType::Table, Database::"Fixed Asset", 'OnAfterModifyEvent', '', false, false)]
     local procedure OnAfterModifyEventFixedAssetRecord(var Rec: Record "Fixed Asset"; var xRec: Record "Fixed Asset")
     var
-        FaClasses: Record "FA Class";
+        FASubClasses: Record "FA SubClass";
     begin
-        FaClasses.SetRange("Use As Vehicle", true);
-        FaClasses.FindFirst();
-        if xRec."FA Subclass Code" <> Rec."FA Subclass Code" then begin
-            if (Rec."FA Subclass Code" = FaClasses.Code) then begin
+        FASubClasses.Reset();
+        FASubClasses.SetRange("For Vehicles", true);
+        If FASubClasses.FindFirst() then begin
+            if xRec."FA Subclass Code" <> Rec."FA Subclass Code" then begin
+                if (Rec."FA Subclass Code" = FASubClasses.Code) then begin
+                    updateCarClassification(Rec)
+                end
+            end else if (Rec."FA Subclass Code" = FASubClasses.Code) then begin
                 updateCarClassification(Rec)
-            end
-        end else if (Rec."FA Subclass Code" = FaClasses.Code) then begin
-            updateCarClassification(Rec)
-        end
-
+            end;
+        end;
     end;
 }
 

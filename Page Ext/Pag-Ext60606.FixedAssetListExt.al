@@ -48,19 +48,17 @@ pageextension 60606 FixedAssetListExt extends "Fixed Asset List"
     trigger OnOpenPage()
     var
         FixedAsset: Record "Fixed Asset";
-        FaClasses: Record "FA Class";
+        FASubClasses: Record "FA SubClass";
     begin
-        FaClasses.SetRange("Use As Vehicle", true);
-        FaClasses.FindFirst();
-        if not FixedAsset.IsEmpty then begin
+        FASubClasses.Reset();
+        FASubClasses.SetRange("For Vehicles", true);
+        If FASubClasses.FindFirst() then begin
+            FixedAsset.Reset();
+            FixedAsset.SetRange("FA Subclass Code", FASubClasses.Code);
             FixedAsset.SetRange("Classify As Vehicle", false);
-            FixedAsset.SetRange("FA Subclass Code", FaClasses.Code);
             if FixedAsset.FindSet() then begin
-                repeat
-                    FixedAsset."Classify As Vehicle" := true;
-                    FixedAsset.Modify();
-                until FixedAsset.Next() = 0;
-            end
-        end
+                FixedAsset.ModifyAll("Classify As Vehicle",true);
+            end;
+        end;
     end;
 }

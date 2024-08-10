@@ -18,17 +18,24 @@ tableextension 60614 "Fa Classes Ext" extends "FA Class"
         }
 
     }
+}
 
-    keys
+tableextension 60615 "FA SubClasses Ext" extends "FA Subclass"
+{
+    fields
     {
-        // Add changes to keys here
+        field(60600; "For Vehicles"; Boolean)
+        {
+            DataClassification = ToBeClassified;
+            trigger OnValidate()
+            var
+                FASubClass: Record "FA Subclass";
+            begin
+                FASubClass.SetRange("For Vehicles", true);
+                if FASubClass.FindFirst() then begin
+                    Error('You can only select one sub class for vehicle usage!!!');
+                end
+            end;
+        }
     }
-
-    fieldgroups
-    {
-        // Add changes to field groups here
-    }
-
-    var
-        myInt: Integer;
 }
