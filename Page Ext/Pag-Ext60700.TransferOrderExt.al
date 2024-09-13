@@ -15,6 +15,7 @@ pageextension 60649 "Transfer OrderExt" extends "Transfer Order"
                 ApplicationArea = All;
                 ToolTip = 'Specifies the value of the Status field.';
             }
+
         }
         addafter(Control1905767507)
         {
@@ -46,6 +47,7 @@ pageextension 60649 "Transfer OrderExt" extends "Transfer Order"
                     Caption = 'Send Approval Request';
                     Image = SendApprovalRequest;
                     Promoted = true;
+                    Visible = RequesterVisible;
                     PromotedCategory = Process;
                     PromotedOnly = true;
                     ApplicationArea = All;
@@ -88,6 +90,7 @@ pageextension 60649 "Transfer OrderExt" extends "Transfer Order"
                     Promoted = true;
                     PromotedCategory = Process;
                     PromotedOnly = true;
+                    Visible = RequesterVisible;
                     ApplicationArea = All;
                     // Visible = cansendApproval;
 
@@ -126,6 +129,7 @@ pageextension 60649 "Transfer OrderExt" extends "Transfer Order"
                     Promoted = true;
                     PromotedCategory = Process;
                     PromotedOnly = true;
+                    Visible = ApprovalRequestVisible;
                     //The property 'PromotedCategory' can only be set if the property 'Promoted' is set to 'true'
                     //PromotedCategory = Process;
 
@@ -149,6 +153,7 @@ pageextension 60649 "Transfer OrderExt" extends "Transfer Order"
                     // Visible = canPost;
                     Promoted = true;
                     PromotedCategory = Process;
+                    Visible = ApprovalRequestVisible;
                     PromotedOnly = true;
                     trigger OnAction()
                     begin
@@ -173,7 +178,31 @@ pageextension 60649 "Transfer OrderExt" extends "Transfer Order"
         userSetup: Record "User Setup";
     begin
         userSetup.Get(UserId);
-        // if (Rec.Status in [Rec.Status::Approved]) then canPost := true;
+
+        if rec."Raised by" <> UserId then RequesterVisible := false else RequesterVisible := true;
+        IF Rec.Status1 = Rec.Status1::"Pending Approval" THEN
+            ApprovalRequestVisible := TRUE
+        Else
+            ApprovalRequestVisible := false;
+
+        IF Rec.Status1 = Rec.Status1::"Pending Approval" THEN BEGIN
+            DocumentApprovalEntry.RESET;
+            DocumentApprovalEntry.SETCURRENTKEY(Sequence, "Document No.");
+            DocumentApprovalEntry.SETRANGE("Document No.", Rec."No.");
+            DocumentApprovalEntry.SETRANGE("Table No.", Database::"Transfer Header");
+            DocumentApprovalEntry.SETFILTER(DocumentApprovalEntry."Approval Status", '%1', DocumentApprovalEntry."Approval Status"::Pending);
+            IF DocumentApprovalEntry.FINDFIRST THEN begin
+                // Start of Logic that allows only current approver see approve or reject action
+                IF DocumentApprovalEntry.Approver = USERID THEN
+                    ApprovalRequestVisible := TRUE
+                ELSE
+                    ApprovalRequestVisible := FALSE;
+                // End of Logic that allows only current approver see approve or reject action
+                Rec."Current Pending Person" := DocumentApprovalEntry.Approver;
+                Rec.MODIFY(TRUE);
+            END;
+        END;
+        // if (Rec.Status1 in [Rec.Status::Approved]) then canPost := true;
         // if ((Rec.Status = Rec.Status::" ") and (userSetup."Station Manager")) then cansendApproval := true;
         // case Rec.Status1 of
         //     Rec.Status1::Approved:
@@ -210,6 +239,8 @@ pageextension 60649 "Transfer OrderExt" extends "Transfer Order"
 
     var
         DocumentApprovalWorkflow: Codeunit 50000;
+        ApprovalRequestVisible, RequesterVisible : Boolean;
+
         DocumentApprovalEntry: Record "REI-Document Approval Entry";
         TransferOrder: Record "Transfer Header";
         RecRef: RecordRef;
