@@ -23,6 +23,13 @@ tableextension 60621 "Item Ledger ent Ext" extends "Item Ledger Entry"
         {
             Editable = false;
         }
+        field(50005; "Planned Output"; Decimal)
+        {
+            Editable = false;
+        }
+
+
+
 
     }
 

@@ -9,6 +9,14 @@ pageextension 60649 "Transfer OrderExt" extends "Transfer Order"
         }
         addafter(Status)
         {
+            field("Production Description"; Rec."Production Description")
+            {
+                ApplicationArea = All;
+                ToolTip = 'Specifies the value of the Production Description field.', Comment = '%';
+                MultiLine = true;
+                NotBlank = true;
+                ShowMandatory = true;
+            }
 
             field(Status1; Rec.Status1)
             {
@@ -62,6 +70,8 @@ pageextension 60649 "Transfer OrderExt" extends "Transfer Order"
                         Rec.TestField("Shortcut Dimension 2 Code");
                         IF Rec.Status1 = Rec.Status1::Approved THEN
                             ERROR('The document is already approved!');
+                        IF DocumentWorkflow.GET(USERID, Database::"Transfer Header") THEN
+                            IF UserSetup.GET(DocumentWorkflow."1st Approver") THEN;
                         TransferLine.Reset();
                         TransferLine.SetRange("Document No.", Rec."No.");
                         TransferLine.SetFilter("Line No.", '<>%1', 0);
@@ -76,8 +86,8 @@ pageextension 60649 "Transfer OrderExt" extends "Transfer Order"
                         TransferOrder.SETRANGE("No.", Rec."No.");
                         IF TransferOrder.FINDFIRST THEN
                             RecID := TransferOrder.RECORDID;
-
                         DocumentApprovalWorkflow.SendApprovalRequest(RecID.TABLENO, Rec."No.", RecID, TODAY, 0, 'Transfer Order - Approval Requisition');
+                        SendApprovalRequestNotification(UserSetup, Rec."No.", Rec."Production Description");
                         Rec.Status1 := Rec.Status1::"Pending Approval";
                         Rec.MODIFY;
                     end;
@@ -237,6 +247,46 @@ pageextension 60649 "Transfer OrderExt" extends "Transfer Order"
         // end;
     end;
 
+
+    procedure SendApprovalRequestNotification(Recipient: Record "User Setup"; DocNo: Code[20]; Description: Text[1000])
+    var
+        Subject: Text;
+        EmailBody: Text;
+        EMail: Codeunit Email;
+        EmailMessage: Codeunit "Email Message";
+        Recipient1: List of [Text];
+        hyperlinkText: Text;
+        Link: Text;
+        GLSetup: Record "General Ledger Setup";
+        CurrCode: Code[50];
+        SentBy: Record "User Setup";
+    begin
+        IF SentBy.GET(USERID) THEN;
+
+        Recipient1.add(Recipient."E-mail");
+
+        EmailBody := STRSUBSTNO(Text001, CurrCode, 0, Rec."Production Description", UserId);
+
+        Rec.SETRECFILTER;
+        Link := GETURL(CLIENTTYPE::Web, COMPANYNAME, OBJECTTYPE::Page,
+                    PAGE::"Transfer Order", Rec);
+        hyperlinkText := STRSUBSTNO('<a href=' + Link + '>' + 'Click here to approve or reject record.</a>');
+        Subject := STRSUBSTNO('Approval Request for %1 by %2', Rec."Production Description", UserId);
+        EmailMessage.Create(Recipient1, Subject, '', TRUE);
+        EmailMessage.AppendToBody(FORMAT(STRSUBSTNO('Dear ' + Recipient."Full Name" + ',')));
+        EmailMessage.AppendToBody('<br><br>');
+        EmailMessage.AppendToBody(FORMAT(EmailBody));
+        EmailMessage.AppendToBody('<br><br>');
+        EmailMessage.AppendToBody(hyperlinkText);
+        EmailMessage.AppendToBody('<br><br>');
+        EmailMessage.AppendToBody('Regards,');
+        EmailMessage.AppendToBody('<br><br>');
+        EmailMessage.AppendToBody(FORMAT(STRSUBSTNO(SentBy."Full Name")));
+        EmailMessage.AppendToBody('<HR>');
+        EmailMessage.AppendToBody(FORMAT(STRSUBSTNO(SystemGenerated)));
+        IF Email.Send(EmailMessage, Enum::"Email Scenario"::Default) THEN;
+    end;
+
     var
         DocumentApprovalWorkflow: Codeunit 50000;
         ApprovalRequestVisible, RequesterVisible : Boolean;
@@ -245,5 +295,9 @@ pageextension 60649 "Transfer OrderExt" extends "Transfer Order"
         TransferOrder: Record "Transfer Header";
         RecRef: RecordRef;
         RecID: RecordID;
+        UserSetup: Record "User Setup";
         canPost, cansendApproval, canApproval : Boolean;
+        Text001: Label 'Kindly approve %1';
+        SystemGenerated: Label 'This is a system generated mail.';
+        DocumentWorkflow: Record "REI-Document Workflow";
 }

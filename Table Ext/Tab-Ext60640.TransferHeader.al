@@ -22,6 +22,11 @@ tableextension 60640 "Transfer Header Ext" extends "Transfer Header"
         {
             DataClassification = ToBeClassified;
         }
+        field(50012; "Production Description"; text[200])
+        {
+            DataClassification = ToBeClassified;
+            Caption = 'Description';
+        }
     }
 
     keys
