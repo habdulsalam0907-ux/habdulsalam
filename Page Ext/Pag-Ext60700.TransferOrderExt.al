@@ -9,12 +9,21 @@ pageextension 60649 "Transfer OrderExt" extends "Transfer Order"
         }
         addafter(Status)
         {
+            field("Production Description"; Rec."Production Description")
+            {
+                ApplicationArea = All;
+                ToolTip = 'Specifies the value of the Production Description field.', Comment = '%';
+                MultiLine = true;
+                NotBlank = true;
+                ShowMandatory = true;
+            }
 
             field(Status1; Rec.Status1)
             {
                 ApplicationArea = All;
                 ToolTip = 'Specifies the value of the Status field.';
             }
+
         }
         addafter(Control1905767507)
         {
@@ -46,6 +55,7 @@ pageextension 60649 "Transfer OrderExt" extends "Transfer Order"
                     Caption = 'Send Approval Request';
                     Image = SendApprovalRequest;
                     Promoted = true;
+                    Visible = RequesterVisible;
                     PromotedCategory = Process;
                     PromotedOnly = true;
                     ApplicationArea = All;
@@ -60,6 +70,8 @@ pageextension 60649 "Transfer OrderExt" extends "Transfer Order"
                         Rec.TestField("Shortcut Dimension 2 Code");
                         IF Rec.Status1 = Rec.Status1::Approved THEN
                             ERROR('The document is already approved!');
+                        IF DocumentWorkflow.GET(USERID, Database::"Transfer Header") THEN
+                            IF UserSetup.GET(DocumentWorkflow."1st Approver") THEN;
                         TransferLine.Reset();
                         TransferLine.SetRange("Document No.", Rec."No.");
                         TransferLine.SetFilter("Line No.", '<>%1', 0);
@@ -74,8 +86,8 @@ pageextension 60649 "Transfer OrderExt" extends "Transfer Order"
                         TransferOrder.SETRANGE("No.", Rec."No.");
                         IF TransferOrder.FINDFIRST THEN
                             RecID := TransferOrder.RECORDID;
-
                         DocumentApprovalWorkflow.SendApprovalRequest(RecID.TABLENO, Rec."No.", RecID, TODAY, 0, 'Transfer Order - Approval Requisition');
+                        SendApprovalRequestNotification(UserSetup, Rec."No.", Rec."Production Description");
                         Rec.Status1 := Rec.Status1::"Pending Approval";
                         Rec.MODIFY;
                     end;
@@ -88,6 +100,7 @@ pageextension 60649 "Transfer OrderExt" extends "Transfer Order"
                     Promoted = true;
                     PromotedCategory = Process;
                     PromotedOnly = true;
+                    Visible = RequesterVisible;
                     ApplicationArea = All;
                     // Visible = cansendApproval;
 
@@ -126,6 +139,7 @@ pageextension 60649 "Transfer OrderExt" extends "Transfer Order"
                     Promoted = true;
                     PromotedCategory = Process;
                     PromotedOnly = true;
+                    Visible = ApprovalRequestVisible;
                     //The property 'PromotedCategory' can only be set if the property 'Promoted' is set to 'true'
                     //PromotedCategory = Process;
 
@@ -149,6 +163,7 @@ pageextension 60649 "Transfer OrderExt" extends "Transfer Order"
                     // Visible = canPost;
                     Promoted = true;
                     PromotedCategory = Process;
+                    Visible = ApprovalRequestVisible;
                     PromotedOnly = true;
                     trigger OnAction()
                     begin
@@ -173,7 +188,31 @@ pageextension 60649 "Transfer OrderExt" extends "Transfer Order"
         userSetup: Record "User Setup";
     begin
         userSetup.Get(UserId);
-        // if (Rec.Status in [Rec.Status::Approved]) then canPost := true;
+
+        if rec."Raised by" <> UserId then RequesterVisible := false else RequesterVisible := true;
+        IF Rec.Status1 = Rec.Status1::"Pending Approval" THEN
+            ApprovalRequestVisible := TRUE
+        Else
+            ApprovalRequestVisible := false;
+
+        IF Rec.Status1 = Rec.Status1::"Pending Approval" THEN BEGIN
+            DocumentApprovalEntry.RESET;
+            DocumentApprovalEntry.SETCURRENTKEY(Sequence, "Document No.");
+            DocumentApprovalEntry.SETRANGE("Document No.", Rec."No.");
+            DocumentApprovalEntry.SETRANGE("Table No.", Database::"Transfer Header");
+            DocumentApprovalEntry.SETFILTER(DocumentApprovalEntry."Approval Status", '%1', DocumentApprovalEntry."Approval Status"::Pending);
+            IF DocumentApprovalEntry.FINDFIRST THEN begin
+                // Start of Logic that allows only current approver see approve or reject action
+                IF DocumentApprovalEntry.Approver = USERID THEN
+                    ApprovalRequestVisible := TRUE
+                ELSE
+                    ApprovalRequestVisible := FALSE;
+                // End of Logic that allows only current approver see approve or reject action
+                Rec."Current Pending Person" := DocumentApprovalEntry.Approver;
+                Rec.MODIFY(TRUE);
+            END;
+        END;
+        // if (Rec.Status1 in [Rec.Status::Approved]) then canPost := true;
         // if ((Rec.Status = Rec.Status::" ") and (userSetup."Station Manager")) then cansendApproval := true;
         // case Rec.Status1 of
         //     Rec.Status1::Approved:
@@ -208,11 +247,57 @@ pageextension 60649 "Transfer OrderExt" extends "Transfer Order"
         // end;
     end;
 
+
+    procedure SendApprovalRequestNotification(Recipient: Record "User Setup"; DocNo: Code[20]; Description: Text[1000])
+    var
+        Subject: Text;
+        EmailBody: Text;
+        EMail: Codeunit Email;
+        EmailMessage: Codeunit "Email Message";
+        Recipient1: List of [Text];
+        hyperlinkText: Text;
+        Link: Text;
+        GLSetup: Record "General Ledger Setup";
+        CurrCode: Code[50];
+        SentBy: Record "User Setup";
+    begin
+        IF SentBy.GET(USERID) THEN;
+
+        Recipient1.add(Recipient."E-mail");
+
+        EmailBody := STRSUBSTNO(Text001, CurrCode, 0, Rec."Production Description", UserId);
+
+        Rec.SETRECFILTER;
+        Link := GETURL(CLIENTTYPE::Web, COMPANYNAME, OBJECTTYPE::Page,
+                    PAGE::"Transfer Order", Rec);
+        hyperlinkText := STRSUBSTNO('<a href=' + Link + '>' + 'Click here to approve or reject record.</a>');
+        Subject := STRSUBSTNO('Approval Request for %1 by %2', Rec."Production Description", UserId);
+        EmailMessage.Create(Recipient1, Subject, '', TRUE);
+        EmailMessage.AppendToBody(FORMAT(STRSUBSTNO('Dear ' + Recipient."Full Name" + ',')));
+        EmailMessage.AppendToBody('<br><br>');
+        EmailMessage.AppendToBody(FORMAT(EmailBody));
+        EmailMessage.AppendToBody('<br><br>');
+        EmailMessage.AppendToBody(hyperlinkText);
+        EmailMessage.AppendToBody('<br><br>');
+        EmailMessage.AppendToBody('Regards,');
+        EmailMessage.AppendToBody('<br><br>');
+        EmailMessage.AppendToBody(FORMAT(STRSUBSTNO(SentBy."Full Name")));
+        EmailMessage.AppendToBody('<HR>');
+        EmailMessage.AppendToBody(FORMAT(STRSUBSTNO(SystemGenerated)));
+        IF Email.Send(EmailMessage, Enum::"Email Scenario"::Default) THEN;
+    end;
+
     var
         DocumentApprovalWorkflow: Codeunit 50000;
+        ApprovalRequestVisible, RequesterVisible : Boolean;
+
         DocumentApprovalEntry: Record "REI-Document Approval Entry";
         TransferOrder: Record "Transfer Header";
         RecRef: RecordRef;
         RecID: RecordID;
+        UserSetup: Record "User Setup";
         canPost, cansendApproval, canApproval : Boolean;
+        Text001: Label 'Kindly approve %1';
+        SystemGenerated: Label 'This is a system generated mail.';
+        DocumentWorkflow: Record "REI-Document Workflow";
 }
