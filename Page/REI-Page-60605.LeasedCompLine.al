@@ -104,7 +104,7 @@ page 60605 "Leased Asset Composition Line"
     {
         area(processing)
         {
-            action(EditInExcel)
+            /* action(EditInExcel)
             {
                 Caption = 'Edit In Excel';
                 ToolTip = 'This uses the Edit in Ecel codeunit';
@@ -120,8 +120,8 @@ page 60605 "Leased Asset Composition Line"
                 begin
                     FilterText := StrSubstNo('Fixed_Asset_Code eq ''%1''', Rec."Fixed Asset Code");
                     EditInExcel.EditPageInExcel(CurrPage.ObjectId(true), CurrPage.ObjectId(false), FilterText);
-                end;
-            }
+                end; 
+            } */
         }
     }
     var

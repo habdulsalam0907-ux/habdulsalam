@@ -224,7 +224,7 @@ tableextension 60603 EmployeeTabExt extends Employee
             end;
         }
 
-        field(50038; "Nationality"; Text[20])
+        field(50038; "Nationality 1"; Text[20])
         {
             TableRelation = "Country/Region";
             Caption = 'Nationality';
@@ -524,7 +524,7 @@ tableextension 60603 EmployeeTabExt extends Employee
                 If UserSetUp.Get("Manager ID") then begin
                     "Manager Name" := UserSetUp."Full Name";
                     "Manager's Email" := UserSetUp."E-Mail";
-                    "Manager No." := UserSetUp."Employee No.";
+                    "Manager No." := UserSetUp."Employee No";
                 end else begin
                     Clear("Manager Name");
                     Clear("Manager's Email");

@@ -73,16 +73,15 @@ page 60608 "Employee Role History"
         UserSetup.Reset;
         UserSetup.Get(UserId);
         if (UserSetup."HR Manager" or UserSetup."Payroll Officer" or UserSetup.CEO or UserSetup."Head of Corp Services") Or
-            (UserId IN [HRSetup."HCS User ID", 
+            (UserId IN [HRSetup."HCS User ID",
                         HRSetup."HR Manager ID",
-                        HRSetup."CEO User ID"]) then 
-        begin
+                        HRSetup."CEO User ID"]) then begin
             exit;
         end else begin // User will see record relating User ID
                        //even after having permission to view others record
-            UserSetup.TestField("Employee No.");
+            UserSetup.TestField("Employee No");
             Rec.FilterGroup(10);
-            Rec.SetRange("Employee No", UserSetup."Employee No.");
+            Rec.SetRange("Employee No", UserSetup."Employee No");
             Rec.FilterGroup(0);
         end;
     end;

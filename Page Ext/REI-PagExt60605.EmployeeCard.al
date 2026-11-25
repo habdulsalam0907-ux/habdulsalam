@@ -88,7 +88,7 @@ pageextension 60605 EmployeeCardExt extends "Employee Card"
         }
         addafter(Gender)
         {
-            field(Nationality; Rec.Nationality)
+            field(Nationality1; Rec."Nationality 1")
             {
                 ApplicationArea = All;
                 ToolTip = 'Specifies the value of the Nationality field.';
@@ -312,7 +312,7 @@ pageextension 60605 EmployeeCardExt extends "Employee Card"
 
                 trigger OnDrillDown()
                 begin
-                    
+
                 end;
             }
         }
@@ -537,8 +537,8 @@ pageextension 60605 EmployeeCardExt extends "Employee Card"
                 Editable = Rec.Status = Rec.Status::Terminated;
             }
         }
-        movefirst(Inactive;"Inactive Date","Cause of Inactivity Code")
-        movefirst(Termination;"Termination Date","Grounds for Term. Code")
+        movefirst(Inactive; "Inactive Date", "Cause of Inactivity Code")
+        movefirst(Termination; "Termination Date", "Grounds for Term. Code")
         modify("Inactive Date")
         {
             ShowMandatory = true;
@@ -712,7 +712,7 @@ pageextension 60605 EmployeeCardExt extends "Employee Card"
     var
         UnlimitedAccess: Boolean;
         IsMedical: Boolean;
-        EditableAcess, OnlyHR: Boolean;
+        EditableAcess, OnlyHR : Boolean;
         UserSetup: Record "User Setup";
         HRSetup: Record "REI-HR Setup";
 
@@ -723,8 +723,7 @@ pageextension 60605 EmployeeCardExt extends "Employee Card"
         if UserSetup.Get(UserId) then begin
             if (UserSetup."HR Manager" or UserSetup."HR Officer" or UserSetup."Head of Corp Services" or UserSetup.CEO
                 or (HRSetup."HCS User ID" = UserId) or (HRSetup."HR Manager ID" = UserId) or (HRSetup."CEO User ID" = UserId)) and
-                UserSetup."View Employee Record" then 
-            begin
+                UserSetup."View Employee Record" then begin
                 UnlimitedAccess := true;
                 EditableAcess := true;
                 OnlyHR := true;
@@ -738,18 +737,18 @@ pageextension 60605 EmployeeCardExt extends "Employee Card"
                     Rec.FILTERGROUP(0);
                     UnlimitedAccess := false;
                 end else begin
-                    If (Rec."No." = UserSetup."Employee No.") then begin
+                    If (Rec."No." = UserSetup."Employee No") then begin
                         UnlimitedAccess := true;
                         EditableAcess := true;
-                    end else If UserSetup."Employee No." = '' then begin
+                    end else If UserSetup."Employee No" = '' then begin
                         UnlimitedAccess := false;
                         EditableAcess := false;
                         Message('Your Employee No, has not been assigned to your user setup.');
                         Rec.Reset();
                     end;
-            
+
                     Rec.FilterGroup(20);
-                    Rec.SetRange("No.", UserSetup."Employee No.");
+                    Rec.SetRange("No.", UserSetup."Employee No");
                     Rec.FilterGroup(0);
                 end;
         end else begin
